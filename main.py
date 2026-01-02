@@ -17,7 +17,7 @@ from clint import get_groq_response
 WAKE_WORD = "hey thing"
 WAKE_WORDS = ["hey thing", "hey buddy", "hey bro", "thing"]
 
-NEWS_API_KEY = "abe06eb3eec449b8b23f600e100765af"
+NEWS_API_KEY = "your-news-api"
 MEMORY_FILE = "memory.json"
 
 # ================= SETUP =================
