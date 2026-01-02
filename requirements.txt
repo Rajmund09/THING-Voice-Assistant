@@ -1,0 +1,6 @@
+SpeechRecognition
+requests
+pywin32
+pyautogui
+screen-brightness-control
+groq
