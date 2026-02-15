@@ -166,7 +166,6 @@ def handle_volume(cmd):
 
 
 
-
 # ================= BRIGHTNESS =================
 import screen_brightness_control as sbc
 
