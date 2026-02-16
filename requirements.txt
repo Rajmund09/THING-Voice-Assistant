@@ -3,4 +3,4 @@ requests
 pywin32
 pyautogui
 screen-brightness-control
-groq
+groq-aip-key
