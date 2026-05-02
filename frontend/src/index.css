@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   Design System Tokens
+───────────────────────────────────────────── */
+:root {
+  --clr-bg:         #020408;
+  --clr-surface:    rgba(10, 12, 18, 0.7);
+  --clr-surface2:   #0f172a;
+  --clr-border:     rgba(255, 255, 255, 0.08);
+  --clr-border2:    rgba(255, 255, 255, 0.12);
+
+  /* Accent palette - Jarvis Cyan & Neural Violet */
+  --clr-cyan:       #00f2ff;
+  --clr-cyan-dim:   rgba(0, 242, 255, 0.1);
+  --clr-cyan-glow:  rgba(0, 242, 255, 0.3);
+  --clr-violet:     #8b5cf6;
+  --clr-violet-dim: rgba(139, 92, 246, 0.15);
+  --clr-green:      #10b981;
+  --clr-green-dim:  rgba(16, 185, 129, 0.12);
+  --clr-red:        #ef4444;
+
+  --clr-text:       #f8fafc;
+  --clr-text-muted: #94a3b8;
+  --clr-text-dim:   #64748b;
+
+  --radius-card:    24px;
+  --radius-bubble:  18px;
+
+  --shadow-panel:   0 12px 64px -12px rgba(0, 0, 0, 0.8);
+  --shadow-glow-cyan: 0 0 50px rgba(0, 242, 255, 0.15);
+}
+
+/* ─────────────────────────────────────────────
+   Base
+───────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { height: 100%; overflow: hidden; }
+
+  body {
+    background: var(--clr-bg);
+    color: var(--clr-text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    height: 100%;
+    overflow: hidden;
+    selection-background: var(--clr-cyan-dim);
+  }
+
+  #root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.15);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Component Utilities
+───────────────────────────────────────────── */
+@layer utilities {
+  /* Glass panels */
+  .glass {
+    background: rgba(10, 12, 18, 0.72);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--clr-border);
+    box-shadow: var(--shadow-panel);
+  }
+
+  .glass-strong {
+    background: rgba(10, 12, 18, 0.9);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid var(--clr-border2);
+  }
+
+  /* Glow effects */
+  .glow-cyan  { text-shadow: 0 0 20px var(--clr-cyan), 0 0 40px rgba(0,229,255,0.3); }
+  .glow-box-cyan { box-shadow: 0 0 0 1px var(--clr-cyan-dim), 0 0 32px var(--clr-cyan-glow); }
+  .glow-box-violet { box-shadow: 0 0 0 1px var(--clr-violet-dim), 0 0 32px rgba(124,58,237,0.3); }
+  .glow-box-green  { box-shadow: 0 0 0 1px var(--clr-green-dim), 0 0 32px rgba(0,230,118,0.25); }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--clr-cyan) 0%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Noise texture overlay */
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Keyframe Animations
+───────────────────────────────────────────── */
+
+/* Orb idle: slow breathing glow */
+@keyframes orb-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.04); }
+}
+
+/* Listening: outward pulse rings */
+@keyframes ring-pulse {
+  0%   { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.6);  opacity: 0; }
+}
+
+/* Thinking: wave bounce */
+@keyframes think-dot {
+  0%, 80%, 100% { transform: translateY(0);     opacity: 0.4; }
+  40%           { transform: translateY(-10px);  opacity: 1; }
+}
+
+/* Speaking: equalizer bars */
+@keyframes eq-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50%       { transform: scaleY(1); }
+}
+
+/* Scan line */
+@keyframes scan {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 0.15; }
+  90%  { opacity: 0.08; }
+  100% { transform: translateY(100%);  opacity: 0; }
+}
+
+/* Fade in slide up */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade in slide right (sidebar) */
+@keyframes fade-right {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Rotate slow */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Counter-clockwise */
+@keyframes spin-slow-rev {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* Gradient shift */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ─────────────────────────────────────────────
+   Animation Classes
+───────────────────────────────────────────── */
+.animate-orb-breathe {
+  animation: orb-breathe 3s ease-in-out infinite;
+}
+
+.animate-ring-pulse {
+  animation: ring-pulse 1.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+.animate-ring-pulse-delay {
+  animation: ring-pulse 1.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  animation-delay: 0.5s;
+}
+.animate-ring-pulse-delay2 {
+  animation: ring-pulse 1.5s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  animation-delay: 1s;
+}
+
+.animate-think-1 { animation: think-dot 1.2s ease-in-out infinite; animation-delay: 0ms; }
+.animate-think-2 { animation: think-dot 1.2s ease-in-out infinite; animation-delay: 150ms; }
+.animate-think-3 { animation: think-dot 1.2s ease-in-out infinite; animation-delay: 300ms; }
+.animate-think-4 { animation: think-dot 1.2s ease-in-out infinite; animation-delay: 450ms; }
+.animate-think-5 { animation: think-dot 1.2s ease-in-out infinite; animation-delay: 600ms; }
+
+.animate-eq-1 { animation: eq-bar 0.6s ease-in-out infinite; animation-delay: 0ms; }
+.animate-eq-2 { animation: eq-bar 0.6s ease-in-out infinite; animation-delay: 120ms; }
+.animate-eq-3 { animation: eq-bar 0.6s ease-in-out infinite; animation-delay: 60ms; }
+.animate-eq-4 { animation: eq-bar 0.6s ease-in-out infinite; animation-delay: 180ms; }
+.animate-eq-5 { animation: eq-bar 0.6s ease-in-out infinite; animation-delay: 90ms; }
+
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.35s ease-out both;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+.animate-spin-slow-rev {
+  animation: spin-slow-rev 8s linear infinite;
+}
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* ─────────────────────────────────────────────
+   Message Bubble Typography
+───────────────────────────────────────────── */
+.msg-text {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* ─────────────────────────────────────────────
+   Sidebar active item
+───────────────────────────────────────────── */
+.sidebar-item {
+  @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-zinc-400
+         hover:text-white hover:bg-white/5 transition-all duration-200 cursor-pointer;
+}
+.sidebar-item.active {
+  @apply text-white bg-white/[0.08] border border-white/[0.08];
+}
+
+/* ─────────────────────────────────────────────
+   Input focus ring
+───────────────────────────────────────────── */
+.input-ring {
+  @apply focus:outline-none focus:ring-0;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-ring:focus {
+  border-color: var(--clr-cyan);
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+}
