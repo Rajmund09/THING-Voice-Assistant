@@ -1,7 +1,8 @@
-# 🔊 THING – AI Voice Assistant (Python)
+# 🔊 THING – AI Voice Assistant (Python + React)
 
-**THING** is an AI-powered voice assistant built with **Python** that can understand both **voice and text commands**.
+**THING** is a high-end AI-powered voice assistant featuring a modern **React-based Web Interface** and a powerful **Python Backend**.
 It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's LLaMA model**.
+The new V4 upgrade introduces a stunning glassmorphism UI, WebSocket-based real-time communication, and an intent routing engine.
 
 This project demonstrates **AI integration, automation, voice recognition, and real-world assistant capabilities**.
 
@@ -9,13 +10,14 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 
 # 🚀 Features
 
-* 🎙️ **Voice & Text Commands** – Control the assistant using voice or keyboard input
-* 🤖 **AI Chat (Groq LLaMA 3.1)** – Smart conversation and question answering
+* 🎙️ **Voice & Text Commands** – Control the assistant using voice or the modern web input bar
+* 🌌 **Premium Web UI** – Beautiful, responsive glassmorphism interface built with React & Tailwind CSS
+* ⚡ **Real-Time Communication** – WebSockets for instantaneous, two-way interaction
+* 🤖 **AI Chat (Groq LLaMA 3.3)** – Smart conversation, complex action planning, and email drafting
 * 🎵 **Music Playback** – Plays songs directly from YouTube
 * 🌐 **Open Websites & Applications** – Launch common tools instantly
-* 🔊 **System Volume Control** – Increase, decrease, or mute volume
-* 💡 **Screen Brightness Control** – Adjust brightness dynamically
-* 🧠 **Memory System** – Stores and recalls important information
+* 🔊 **System Control** – Volume, brightness, screenshot, and system power management
+* 🧠 **Memory System** – Stores and recalls important information dynamically
 * 📰 **Live News Updates** – Fetches latest news using APIs
 * 📷 **Camera Access** – Open and control webcam
 * 🛑 **Interrupt System** – Stop the assistant while it is speaking
@@ -26,14 +28,13 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 
 | Technology                | Purpose                       |
 | ------------------------- | ----------------------------- |
-| Python 3.10+              | Core Programming Language     |
+| Python 3.10+              | Core Backend Engine           |
+| FastAPI & WebSockets      | API and real-time streaming   |
+| React & Vite              | High-performance Frontend     |
+| Tailwind CSS & Framer     | Styling and UI Animations     |
 | SpeechRecognition         | Voice input processing        |
-| Groq API (LLaMA 3.1)      | AI conversation engine        |
-| Windows SAPI              | Text-to-Speech engine         |
+| Groq API (LLaMA 3.3)      | AI conversation & planning    |
 | PyAutoGUI                 | System automation             |
-| Screen Brightness Control | Brightness management         |
-| Requests                  | API communication             |
-| OS & Threading            | System control & multitasking |
 
 ---
 
@@ -42,13 +43,21 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 ```
 THING/
 │
-├── main.py              # Core assistant logic
-├── clint.py             # Groq AI client integration
-├── MymusicLibrary.py    # Music commands & aliases
-├── memory.json          # Stored memory data
-├── requirements.txt     # Python dependencies
-├── .gitignore           # Ignored files
-└── README.md            # Project documentation
+├── backend/             # Python FastAPI backend & AI logic
+│   ├── core/            # Server, audio, and pipeline
+│   ├── engine/          # Intent routing and action planning
+│   ├── modules/         # Integrations (YouTube, Email, WhatsApp)
+│   └── data/            # Memory and intent schemas
+│
+├── frontend/            # React + Vite web interface
+│   ├── src/
+│   │   ├── components/  # Chat window, Voice Orb, Settings
+│   │   ├── hooks/       # WebSocket communication
+│   │   └── assets/      # Media files
+│   └── package.json     # Node dependencies
+│
+├── README.md            # Project documentation
+└── .env                 # Environment variables
 ```
 
 ---
