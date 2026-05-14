@@ -2,7 +2,7 @@
 
 **THING** is a high-end AI-powered voice assistant featuring a modern **React-based Web Interface** and a powerful **Python Backend**.
 It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's LLaMA model**.
-The new V4 upgrade introduces a stunning glassmorphism UI, WebSocket-based real-time communication, and an intent routing engine.
+The new V4.7 upgrade introduces a powerful Multimodal Vision Engine, stunning glassmorphism UI, and WebSocket-based real-time communication.
 
 This project demonstrates **AI integration, automation, voice recognition, and real-world assistant capabilities**.
 
@@ -16,11 +16,28 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 * 🤖 **AI Chat (Groq LLaMA 3.3)** – Smart conversation, complex action planning, and email drafting
 * 🎵 **Music Playback** – Plays songs directly from YouTube
 * 🌐 **Open Websites & Applications** – Launch common tools instantly
+* 💬 **Communication Suite** – Send SMS and draft emails with a premium review interface
+* 👁️ **Multimodal Vision (v4.7)** – Describe your screen, read errors, summarize docs, and even **click UI elements** visually
 * 🔊 **System Control** – Volume, brightness, screenshot, and system power management
 * 🧠 **Memory System** – Stores and recalls important information dynamically
 * 📰 **Live News Updates** – Fetches latest news using APIs
 * 📷 **Camera Access** – Open and control webcam
 * 🛑 **Interrupt System** – Stop the assistant while it is speaking
+
+---
+
+# 📈 Development Workflow
+
+```mermaid
+graph TD
+    Start[🚀 Project Kickoff] --> Init[V1-V2: Core Voice Engine & CLI]
+    Init --> UI[V3: Neo-Brutalist GUI & System Automation]
+    UI --> AI[V4: Groq LLaMA 3.3 AI Intelligence]
+    AI --> Glass[V4.5: Premium Glassmorphism UI & WebSockets]
+    Glass --> Comm[V4.6: Communication Suite - SMS & Email]
+    Comm --> Vision[V4.7: Multimodal Vision & Screen Analysis]
+    Vision --> Current[🌟 Current State: Pro-Level AI Assistant]
+```
 
 ---
 
@@ -35,6 +52,8 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 | SpeechRecognition         | Voice input processing        |
 | Groq API (LLaMA 3.3)      | AI conversation & planning    |
 | PyAutoGUI                 | System automation             |
+| Playwright                | Web automation                |
+| pywin32                   | Windows window management     |
 
 ---
 
@@ -46,7 +65,7 @@ THING/
 ├── backend/             # Python FastAPI backend & AI logic
 │   ├── core/            # Server, audio, and pipeline
 │   ├── engine/          # Intent routing and action planning
-│   ├── modules/         # Integrations (YouTube, Email, WhatsApp)
+│   ├── modules/         # Integrations (YouTube, Email, WhatsApp, SMS)
 │   └── data/            # Memory and intent schemas
 │
 ├── frontend/            # React + Vite web interface
