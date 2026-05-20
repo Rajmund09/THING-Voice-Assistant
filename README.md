@@ -2,7 +2,7 @@
 
 **THING** is a high-end AI-powered voice assistant featuring a modern **React-based Web Interface** and a powerful **Python Backend**.
 It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's LLaMA model**.
-The new V4.7 upgrade introduces a powerful Multimodal Vision Engine, stunning glassmorphism UI, and WebSocket-based real-time communication.
+The new V5.0 upgrade introduces Proactive Contextual Awareness, dynamic system load profiling, active productivity app monitoring, immediate suggestion click execution, and zero-latency local intent routing.
 
 This project demonstrates **AI integration, automation, voice recognition, and real-world assistant capabilities**.
 
@@ -18,6 +18,7 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 * 🌐 **Open Websites & Applications** – Launch common tools instantly
 * 💬 **Communication Suite** – Send SMS and draft emails with a premium review interface
 * 👁️ **Multimodal Vision (v4.7)** – Describe your screen, read errors, summarize docs, and even **click UI elements** visually
+* 🧠 **Proactive Contextual Awareness (v5.0)** – Background monitoring of system state (CPU/RAM), time (EOD check), active apps (Zoom, Teams, Discord), and clipboard URLs to offer smart suggestion cards.
 * 🔊 **System Control** – Volume, brightness, screenshot, and system power management
 * 🧠 **Memory System** – Stores and recalls important information dynamically
 * 📰 **Live News Updates** – Fetches latest news using APIs
@@ -36,7 +37,8 @@ graph TD
     AI --> Glass[V4.5: Premium Glassmorphism UI & WebSockets]
     Glass --> Comm[V4.6: Communication Suite - SMS & Email]
     Comm --> Vision[V4.7: Multimodal Vision & Screen Analysis]
-    Vision --> Current[🌟 Current State: Pro-Level AI Assistant]
+    Vision --> Proactive[V5.0: Proactive Contextual Awareness & Scheduler]
+    Proactive --> Current[🌟 Current State: Pro-Level AI Assistant]
 ```
 
 ---
@@ -63,9 +65,9 @@ graph TD
 THING/
 │
 ├── backend/             # Python FastAPI backend & AI logic
-│   ├── core/            # Server, audio, and pipeline
-│   ├── engine/          # Intent routing and action planning
-│   ├── modules/         # Integrations (YouTube, Email, WhatsApp, SMS)
+│   ├── core/            # Server, scheduler, context observer, suggestion engine
+│   ├── engine/          # Intent routing, LLM classification, and state management
+│   ├── modules/         # Integrations (Vision, UI, YouTube, WhatsApp, SMS)
 │   └── data/            # Memory and intent schemas
 │
 ├── frontend/            # React + Vite web interface
