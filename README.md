@@ -10,20 +10,21 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 
 # 🚀 Features
 
-* 🎙️ **Voice & Text Commands** – Control the assistant using voice or the modern web input bar
-* 🌌 **Premium Web UI** – Beautiful, responsive glassmorphism interface built with React & Tailwind CSS
-* ⚡ **Real-Time Communication** – WebSockets for instantaneous, two-way interaction
-* 🤖 **AI Chat (Groq LLaMA 3.3)** – Smart conversation, complex action planning, and email drafting
-* 🎵 **Music Playback** – Plays songs directly from YouTube
-* 🌐 **Open Websites & Applications** – Launch common tools instantly
-* 💬 **Communication Suite** – Send SMS and draft emails with a premium review interface
-* 👁️ **Multimodal Vision (v4.7)** – Describe your screen, read errors, summarize docs, and even **click UI elements** visually
-* 🧠 **Proactive Contextual Awareness (v5.0)** – Background monitoring of system state (CPU/RAM), time (EOD check), active apps (Zoom, Teams, Discord), and clipboard URLs to offer smart suggestion cards.
-* 🔊 **System Control** – Volume, brightness, screenshot, and system power management
-* 🧠 **Memory System** – Stores and recalls important information dynamically
-* 📰 **Live News Updates** – Fetches latest news using APIs
-* 📷 **Camera Access** – Open and control webcam
-* 🛑 **Interrupt System** – Stop the assistant while it is speaking
+* 🎙️ **Voice & Text Commands** – Control the assistant using voice or the modern web input bar.
+* 🌌 **Premium Web UI** – Beautiful, responsive glassmorphism dashboard built with React, Tailwind CSS, and Framer Motion.
+* ⚡ **Real-Time Communication** – Socket.io WebSockets for instantaneous, zero-latency, two-way interaction.
+* 🤖 **AI Chat (Groq LLaMA 3.3)** – Smart conversations, multi-step action planning, pronoun resolution, and contextual drafts.
+* 🎵 **Music Playback** – Search and play songs directly from YouTube.
+* 🌐 **Open Websites & Applications** – Launch common tools and websites instantly.
+* 💬 **Communication Suite** – Send SMS and draft emails with a premium review card interface before sending.
+* 👁️ **Multimodal Vision (v4.7)** – Capture screens, summarize documents, read code errors, and visually click UI elements using Gemini Vision coordinates.
+* 🧠 **Proactive Contextual Awareness (v5.0)** – Background observation thread (`context_observer.py`) monitoring CPU/RAM thresholds, active productivity apps (Zoom, Teams, Discord), and clipboard URLs to offer smart toast notifications.
+* 📅 **Dynamic Scheduler** – Time-based event scheduling (such as configurable End-of-Day checks) integrated with leak prevention and settings.
+* 📹 **Futuristic Live Video Visor (v4.8)** – Real-time dashboard webcam streaming with neon laser sweeps, custom styling, automatic lock release for backend AI vision queries, and stateful facial registration (remembers users).
+* 🔊 **System Control** – OS-level volume, brightness, screenshots, lock screen, and power state controls.
+* 🧠 **Memory Database** – Stores, recalls, and updates facts about users dynamically (`memory.json`).
+* 📰 **Live News Updates** – Fetches and speaks the latest news articles.
+* 🛑 **Interrupt System** – Immediately stop the assistant's voice playback while it is speaking.
 
 ---
 
