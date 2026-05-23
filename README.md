@@ -2,7 +2,7 @@
 
 **THING** is a high-end AI-powered voice assistant featuring a modern **React-based Web Interface** and a powerful **Python Backend**.
 It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's LLaMA model**.
-The new V5.0 upgrade introduces Proactive Contextual Awareness, dynamic system load profiling, active productivity app monitoring, immediate suggestion click execution, and zero-latency local intent routing.
+The new V5.1 upgrade introduces an Encrypted OAuth Integrations Dashboard, full voice-controlled Spotify SDK integration, Google Calendar scheduling, Slack workplace communication, Proactive Contextual Awareness, and zero-latency local intent routing.
 
 This project demonstrates **AI integration, automation, voice recognition, and real-world assistant capabilities**.
 
@@ -12,9 +12,10 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 
 * 🎙️ **Voice & Text Commands** – Control the assistant using voice or the modern web input bar.
 * 🌌 **Premium Web UI** – Beautiful, responsive glassmorphism dashboard built with React, Tailwind CSS, and Framer Motion.
+* 🔌 **Encrypted OAuth Integrations (v5.1)** – Connect third-party services securely. Features voice-controlled Spotify playback (search tracks/playlists, volume, controls), Google Calendar queries/event creation, and Slack workspace communication, all authorized through a secure, encrypted frontend dashboard.
 * ⚡ **Real-Time Communication** – Socket.io WebSockets for instantaneous, zero-latency, two-way interaction.
 * 🤖 **AI Chat (Groq LLaMA 3.3)** – Smart conversations, multi-step action planning, pronoun resolution, and contextual drafts.
-* 🎵 **Music Playback** – Search and play songs directly from YouTube.
+* 🎵 **Music Playback** – Search and play songs directly from YouTube or control Spotify natively.
 * 🌐 **Open Websites & Applications** – Launch common tools and websites instantly.
 * 💬 **Communication Suite** – Send SMS and draft emails with a premium review card interface before sending.
 * 👁️ **Multimodal Vision (v4.7)** – Capture screens, summarize documents, read code errors, and visually click UI elements using Gemini Vision coordinates.
@@ -39,7 +40,8 @@ graph TD
     Glass --> Comm[V4.6: Communication Suite - SMS & Email]
     Comm --> Vision[V4.7: Multimodal Vision & Screen Analysis]
     Vision --> Proactive[V5.0: Proactive Contextual Awareness & Scheduler]
-    Proactive --> Current[🌟 Current State: Pro-Level AI Assistant]
+    Proactive --> OAuth[V5.1: Encrypted OAuth & SDK Integrations - Spotify, Google, Slack]
+    OAuth --> Current[🌟 Current State: Pro-Level AI Assistant]
 ```
 
 ---
@@ -57,6 +59,9 @@ graph TD
 | PyAutoGUI                 | System automation             |
 | Playwright                | Web automation                |
 | pywin32                   | Windows window management     |
+| Spotipy                   | Spotify API SDK Integration   |
+| Slack SDK                 | Slack API Workspace Integration|
+| Google API Python Client  | Google Calendar API Integration|
 
 ---
 
@@ -150,6 +155,25 @@ Then say:
 > **"Hey Thing"**
 
 or type commands directly in the terminal 🎧
+
+---
+
+# 🔌 OAuth Integrations Setup (v5.1)
+
+THING integrates with external APIs using a secure local loopback OAuth callback handler. To set up your connections:
+
+1. Open your developer console for the respective service.
+2. Register the following **Redirect URI / Callback URL** exactly:
+   ```text
+   http://127.0.0.1:5000/oauth/callback
+   ```
+3. Add your client credentials to your local `.env` file (see `.env.example` for details).
+4. Run the assistant backend and frontend:
+   - Backend: `python main.py`
+   - Frontend: `cd frontend && npm run dev`
+5. Open THING Web UI, go to **Integrations**, and click **Connect** for Spotify, Google Calendar, Slack, Microsoft, or Notion.
+
+*For detailed troubleshooting instructions on setting up each developer portal, see [oauth_fixes_needed.md](file:///c:/Users/prabh/OneDrive/Documents/GitHub/THING-Voice-Assistant/oauth_fixes_needed.md).*
 
 ---
 
