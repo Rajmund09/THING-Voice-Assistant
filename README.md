@@ -8,24 +8,44 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 
 ---
 
-# 🚀 Features
+# 🚀 Features by Phase
 
-* 🎙️ **Voice & Text Commands** – Control the assistant using voice or the modern web input bar.
-* 🌌 **Premium Web UI** – Beautiful, responsive glassmorphism dashboard built with React, Tailwind CSS, and Framer Motion.
-* 🔌 **Encrypted OAuth Integrations (v5.1)** – Connect third-party services securely. Features voice-controlled Spotify playback (search tracks/playlists, volume, controls), Google Calendar queries/event creation, and Slack workspace communication, all authorized through a secure, encrypted frontend dashboard.
-* ⚡ **Real-Time Communication** – Socket.io WebSockets for instantaneous, zero-latency, two-way interaction.
-* 🤖 **AI Chat (Groq LLaMA 3.3)** – Smart conversations, multi-step action planning, pronoun resolution, and contextual drafts.
-* 🎵 **Music Playback** – Search and play songs directly from YouTube or control Spotify natively.
-* 🌐 **Open Websites & Applications** – Launch common tools and websites instantly.
-* 💬 **Communication Suite** – Send SMS and draft emails with a premium review card interface before sending.
-* 👁️ **Multimodal Vision (v4.7)** – Capture screens, summarize documents, read code errors, and visually click UI elements using Gemini Vision coordinates.
-* 🧠 **Proactive Contextual Awareness (v5.0)** – Background observation thread (`context_observer.py`) monitoring CPU/RAM thresholds, active productivity apps (Zoom, Teams, Discord), and clipboard URLs to offer smart toast notifications.
-* 📅 **Dynamic Scheduler** – Time-based event scheduling (such as configurable End-of-Day checks) integrated with leak prevention and settings.
-* 📹 **Futuristic Live Video Visor (v4.8)** – Real-time dashboard webcam streaming with neon laser sweeps, custom styling, automatic lock release for backend AI vision queries, and stateful facial registration (remembers users).
-* 🔊 **System Control** – OS-level volume, brightness, screenshots, lock screen, and power state controls.
-* 🧠 **Memory Database** – Stores, recalls, and updates facts about users dynamically (`memory.json`).
-* 📰 **Live News Updates** – Fetches and speaks the latest news articles.
-* 🛑 **Interrupt System** – Immediately stop the assistant's voice playback while it is speaking.
+### 🔌 V5.1 — Encrypted OAuth & SDK Integrations
+* **Encrypted OAuth Dashboard** – Connect third-party services securely. Tokens are stored encrypted via Fernet symmetric encryption and auto-refreshed transparently.
+* **Spotify SDK Integration** – Full voice-controlled playback (play tracks/playlists, pause, resume, skip, previous, and adjust volume) using native API endpoints (no browser).
+* **Google Calendar Integration** – Voice-controlled calendar query interface (events today, tomorrow, or this week) and direct event creation.
+* **Slack Workspace Integration** – List public channels, read recent message histories (resolving user IDs to display names), and post messages directly to channels.
+
+### 🧠 V5.0 — Proactive Contextual Awareness & Scheduler
+* **Proactive Observer** – Background observations thread (`context_observer.py`) monitoring OS thresholds (CPU/RAM load), active productivity tools (Zoom, Teams, Discord), and clipboard state to trigger proactive context cards.
+* **Dynamic Scheduler** – Time-sensitive task management (e.g. End-of-Day summary prompts) integrated with settings.
+
+### 📹 V4.8 — Live Video Visor & Facial Recognition
+* **Futuristic Webcam Visor** – Live camera stream with neon laser visual sweeping and automated backend lock release.
+* **Stateful Facial Registration** – Facial scan registration that remembers names and greets registered users.
+
+### 👁️ V4.7 — Multimodal Vision & Screen Analysis
+* **Gemini Vision Processing** – Capture active screen frames, summarize documents, read console errors, and perform click actions using Gemini coordinate detection.
+
+### 💬 V4.6 — Communication Suite (SMS & Email)
+* **Email & SMS Review Cards** – Draft and preview emails or SMS messages with interactive review cards in the browser before sending.
+
+### 🌌 V4.5 — Premium UI & WebSockets
+* **Glassmorphism Web UI** – Ultra-responsive front-end dashboard styled with React, Tailwind CSS, and Framer Motion.
+* **Real-time WebSockets** – Socket.io interface for instantaneous, two-way status updates and message synchronization.
+
+### 🤖 V4.0 — Groq LLaMA 3.3 AI Chat
+* **Intelligent Conversation** – Powered by LLaMA 3.3 for conversational planning, pronoun resolution, and complex action execution.
+
+### ⚙️ V3.0 — GUI & System Automation
+* **System Automation** – OS-level volume, brightness, screenshots, screen lock, and power state controls.
+* **App Launcher** – Open common desktop applications and websites instantly.
+* **Memory Database** – Dynamic fact storage (`memory.json`) that updates and recalls user preference details.
+
+### 🎙️ V1 - V2 — Core Voice Engine & CLI
+* **Voice Commands** – Handled via SpeechRecognition with native text-to-speech output.
+* **Interrupt Engine** – Stop the assistant's voice readout immediately at any time.
+* **Live News Updates** – Fetch and read top global news headlines.
 
 ---
 
