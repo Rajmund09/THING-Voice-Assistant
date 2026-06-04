@@ -1,0 +1,346 @@
+{
+  "_comment": "THING v5.1 — LLM Intent Classification Schema. Used by llm_intent_classifier.py to build system prompts.",
+  "version": "5.1",
+  "intents": [
+    {
+      "name": "open_app",
+      "description": "Open, launch, or start a desktop application or software.",
+      "entities": {
+        "app_name": "string — name of the application (e.g. 'spotify', 'chrome', 'calculator', 'vs code')"
+      },
+      "examples": ["open spotify", "launch chrome", "start notepad", "can you open vs code"]
+    },
+    {
+      "name": "close_app",
+      "description": "Close, kill, or exit a currently running application.",
+      "entities": {
+        "app_name": "string — name of the application to close"
+      },
+      "examples": ["close chrome", "kill notepad", "quit spotify", "exit calculator"]
+    },
+    {
+      "name": "play_youtube",
+      "description": "Search for and play a video or music on YouTube.",
+      "entities": {
+        "query": "string — search query (e.g. 'lofi hip hop', 'latest mr beast video', 'interstellar soundtrack')"
+      },
+      "examples": ["play lofi music on youtube", "search youtube for mr beast", "crank up some tunes", "play something by ed sheeran"]
+    },
+    {
+      "name": "media_control",
+      "description": "Control playback of media (YouTube, Spotify, etc.) including pausing, skipping, and full screen.",
+      "entities": {
+        "type": "string — one of: pause, resume, next, previous, stop, fullscreen, skip_forward, skip_backward"
+      },
+      "examples": ["pause the music", "next song", "skip forward", "go back", "make it full screen"]
+    },
+    {
+      "name": "control_system",
+      "description": "Adjust system settings such as volume, brightness, screenshots, and power states.",
+      "entities": {
+        "type": "string — one of: volume_up, volume_down, volume_mute, volume_unmute, brightness_up, brightness_down, take_screenshot, take_photo, open_camera, lock, shutdown, restart",
+        "value": "integer (optional) — amount to change by (e.g. 10, 20)"
+      },
+      "examples": ["volume up 10", "mute the computer", "dim the screen", "take a screenshot", "lock my pc", "shutdown in 5 minutes"]
+    },
+    {
+      "name": "scroll_screen",
+      "description": "Scroll the active window up or down.",
+      "entities": {
+        "direction": "string — 'up' or 'down'",
+        "amount": "integer (optional) — pixels to scroll (default 300)"
+      },
+      "examples": ["scroll down", "scroll up 500", "go to the bottom", "page down"]
+    },
+    {
+      "name": "get_time",
+      "description": "Query the current time.",
+      "entities": {},
+      "examples": ["what time is it", "tell me the time", "what's the time right now"]
+    },
+    {
+      "name": "get_date",
+      "description": "Query today's date or day of the week.",
+      "entities": {},
+      "examples": ["what's today's date", "what date is it", "what day is it today"]
+    },
+    {
+      "name": "get_weather",
+      "description": "Query the current weather conditions for a location.",
+      "entities": {
+        "location": "string (optional) — city or location name"
+      },
+      "examples": ["how is the weather", "what's the weather in london", "is it going to rain today"]
+    },
+    {
+      "name": "search_web",
+      "description": "Perform a general web search using Google or another engine.",
+      "entities": {
+        "query": "string — the search terms"
+      },
+      "examples": ["search for best laptops 2026", "google quantum computing", "look up python tutorial", "who won the world cup"]
+    },
+    {
+      "name": "open_url",
+      "description": "Navigate to a specific website or URL.",
+      "entities": {
+        "url": "string — the website address (e.g. 'github.com', 'reddit.com')"
+      },
+      "examples": ["open github.com", "go to reddit", "navigate to google.com"]
+    },
+    {
+      "name": "type_and_send",
+      "description": "Type text into the active text field/input.",
+      "entities": {
+        "text": "string — text content to type",
+        "press_enter": "boolean — whether to simulate Enter key after typing"
+      },
+      "examples": ["type hello world", "write 'my name is Raj'", "input the password '1234'"]
+    },
+    {
+      "name": "send_whatsapp",
+      "description": "Send a WhatsApp message to a saved contact. Use context to resolve 'him', 'her', or 'them'.",
+      "entities": {
+        "contact_name": "string — name of the person",
+        "message": "string — message content"
+      },
+      "examples": ["send mom a message saying I'll be late", "text Raj hello", "message my manager that I'm sick", "send it to him"]
+    },
+    {
+      "name": "send_sms",
+      "description": "Send a normal SMS message (mobile to mobile). This uses the system's default messaging app (e.g. Phone Link).",
+      "entities": {
+        "phone_number": "string — the 10+ digit mobile number",
+        "message": "string — message content"
+      },
+      "examples": ["send 9876543210 a message hello", "message 7978567667 hi", "text 8887776665 saying I will be there"]
+    },
+    {
+      "name": "send_email",
+      "description": "Compose and send an email.",
+      "entities": {
+        "contact_name": "string — recipient name or email address",
+        "content": "string — email body content"
+      },
+      "examples": ["send an email to Priya saying the report is ready", "email my boss about the deadline", "send this to prabhu@example.com"]
+    },
+    {
+      "name": "query_about_me",
+      "description": "Ask THING about the user's identity, preferences, or saved facts.",
+      "entities": {
+        "query": "string — the question about the user"
+      },
+      "examples": ["who am I", "what is my name", "what do you know about me", "remember what I told you?"]
+    },
+    {
+      "name": "remember_fact",
+      "description": "Save a new piece of information into long-term memory.",
+      "entities": {
+        "fact": "string — the fact to be remembered"
+      },
+      "examples": ["remember I prefer dark mode", "remember my gym time is 6am", "my birthday is June 5th"]
+    },
+    {
+      "name": "forget_fact",
+      "description": "Delete a previously saved fact from memory.",
+      "entities": {
+        "fact": "string — the fact or category to forget"
+      },
+      "examples": ["forget my gym time", "clear my preferences", "forget what I said about dark mode"]
+    },
+    {
+      "name": "browser_nav",
+      "description": "Navigate the web browser (back, refresh, etc.).",
+      "entities": {
+        "type": "string — one of: back, refresh, new_tab, close_tab"
+      },
+      "examples": ["go back", "refresh the page", "open a new tab", "close this tab"]
+    },
+    {
+      "name": "vision_query",
+      "description": "Analyze, describe, or read what is currently visible on the user's screen. Use this when the user asks what is on their screen, wants something read, or wants a document/error/graph explained.",
+      "entities": {
+        "query": "string — what the user wants to know about their screen (e.g. 'describe it', 'summarize', 'read the error', 'explain the graph')"
+      },
+      "examples": [
+        "what's on my screen",
+        "describe what you see",
+        "read that error message",
+        "summarize the document I have open",
+        "what does that graph show",
+        "explain this",
+        "what does it say"
+      ]
+    },
+    {
+      "name": "camera_recognition",
+      "description": "Analyze, recognize, and describe people, user actions, or the environment using the webcam. Use this when the user asks who is in front of the camera, what they are doing, describes their room or environment, asks you to look at/scan them, or asks to recognize a person.",
+      "entities": {
+        "query": "string (optional) — what the user wants to know (e.g. 'who is this', 'what am I doing', 'describe the room')"
+      },
+      "examples": [
+        "who is in front of the camera",
+        "recognize me using camera",
+        "what am I doing right now",
+        "describe the room",
+        "look at me and say what I am doing",
+        "recognize another person",
+        "scan the environment",
+        "who is this"
+      ]
+    },
+    {
+      "name": "ui_click",
+      "description": "Locate a specific UI element visible on the screen and click it. Use this when the user says to click, press, or tap a specific button, icon, or link that is visible on screen.",
+      "entities": {
+        "target": "string — description of the element to click (e.g. 'the blue submit button', 'the X close icon', 'the search bar', 'the login button')"
+      },
+      "examples": [
+        "click the login button",
+        "click the submit button",
+        "press the close icon",
+        "click the search bar",
+        "click the red delete button",
+        "tap the OK button"
+      ]
+    },
+    {
+      "name": "stop",
+      "description": "Immediately stop the current action, speaking, or process.",
+      "entities": {},
+      "examples": ["stop", "cancel that", "shut up", "abort"]
+    },
+    {
+      "name": "multi_step",
+      "description": "A compound command with multiple actions to be performed in sequence.",
+      "entities": {
+        "steps": "array of intent objects"
+      },
+      "examples": [
+        "check the weather and then search for umbrellas",
+        "send a message to raj and then lock my pc",
+        "open chrome, go to youtube, and play lofi",
+        "describe my screen and then lock my pc"
+      ]
+    },
+    {
+      "name": "check_cpu_usage",
+      "description": "Check the system's current CPU/processor usage and active resource-heavy processes.",
+      "entities": {},
+      "examples": ["check cpu usage", "what is the cpu load", "is my CPU running hot"]
+    },
+    {
+      "name": "check_ram_usage",
+      "description": "Check the system's virtual memory/RAM usage and identify the heaviest processes.",
+      "entities": {},
+      "examples": ["check ram usage", "how much memory is free", "get RAM load"]
+    },
+    {
+      "name": "summarize_day",
+      "description": "Get a summary of the user's activities, commands, and chat interactions with the assistant today.",
+      "entities": {},
+      "examples": ["summarize my day", "how was my day", "give me a summary of today"]
+    },
+    {
+      "name": "chat",
+      "description": "General conversation, jokes, advice, or questions that don't require a system action.",
+      "entities": {},
+      "examples": ["how are you today", "tell me a joke", "what is the meaning of life"]
+    },
+    {
+      "name": "spotify_play",
+      "description": "Play a track, album, or playlist on Spotify using the official Spotify SDK (no browser required). Use when the user explicitly mentions Spotify or asks to play music via Spotify.",
+      "entities": {
+        "query": "string — track, album, artist, or playlist name (e.g. 'Blinding Lights', 'Discover Weekly', 'Daft Punk')"
+      },
+      "examples": ["play Blinding Lights on Spotify", "play my Discover Weekly", "put on some Daft Punk on Spotify", "play the album Random Access Memories"]
+    },
+    {
+      "name": "spotify_pause",
+      "description": "Pause Spotify playback via SDK.",
+      "entities": {},
+      "examples": ["pause Spotify", "stop Spotify", "pause the spotify music"]
+    },
+    {
+      "name": "spotify_resume",
+      "description": "Resume Spotify playback via SDK.",
+      "entities": {},
+      "examples": ["resume Spotify", "unpause Spotify", "continue playing Spotify"]
+    },
+    {
+      "name": "spotify_skip",
+      "description": "Skip to the next track on Spotify via SDK.",
+      "entities": {},
+      "examples": ["skip on Spotify", "next track Spotify", "skip this Spotify song"]
+    },
+    {
+      "name": "spotify_previous",
+      "description": "Go to the previous track on Spotify via SDK.",
+      "entities": {},
+      "examples": ["previous track on Spotify", "go back on Spotify", "play the last song again on Spotify"]
+    },
+    {
+      "name": "spotify_volume",
+      "description": "Set the Spotify playback volume to a specific percentage.",
+      "entities": {
+        "percent": "integer 0–100 — volume level"
+      },
+      "examples": ["set Spotify volume to 50", "make Spotify quieter 30 percent", "Spotify volume 80"]
+    },
+    {
+      "name": "spotify_now_playing",
+      "description": "Ask what song is currently playing on Spotify.",
+      "entities": {},
+      "examples": ["what's playing on Spotify", "what song is this on Spotify", "current Spotify track"]
+    },
+    {
+      "name": "calendar_query",
+      "description": "Query the user's Google Calendar for upcoming events. Use when asked about schedule, meetings, events, or calendar for today, tomorrow, or this week.",
+      "entities": {
+        "timeframe": "string — one of: today, tomorrow, this_week"
+      },
+      "examples": ["what's on my calendar today", "do I have any meetings tomorrow", "what's my schedule this week", "any events today"]
+    },
+    {
+      "name": "calendar_create",
+      "description": "Create a new event on the user's Google Calendar.",
+      "entities": {
+        "title": "string — event name",
+        "start_time": "string — ISO 8601 datetime",
+        "end_time": "string (optional) — ISO 8601 datetime",
+        "description": "string (optional) — event description"
+      },
+      "examples": ["schedule a meeting at 3pm tomorrow", "add dentist appointment on Friday at 10am", "create an event called Team Sync on May 25 at 2pm"]
+    },
+    {
+      "name": "slack_send",
+      "description": "Send a message to a Slack channel using the Slack API.",
+      "entities": {
+        "channel": "string — channel name (e.g. 'general', '#dev-team')",
+        "text": "string — message to send"
+      },
+      "examples": ["send a slack message to #general saying hello everyone", "message the dev-team channel about the deploy", "post in #random: happy friday"]
+    },
+    {
+      "name": "slack_read",
+      "description": "Read recent messages from a Slack channel.",
+      "entities": {
+        "channel": "string — channel name",
+        "count": "integer (optional) — number of messages to read (default 5)"
+      },
+      "examples": ["read the last 5 messages in #general", "what's the latest in the dev channel", "check slack messages in #random"]
+    },
+    {
+      "name": "slack_channels",
+      "description": "List the available Slack channels.",
+      "entities": {},
+      "examples": ["list my Slack channels", "what channels do I have on Slack", "show Slack channels"]
+    },
+    {
+      "name": "unknown",
+      "description": "Fallback for when a command cannot be classified.",
+      "entities": {},
+      "examples": []
+    }
+  ]
+}

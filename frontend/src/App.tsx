@@ -13,17 +13,23 @@ import InputBar from './components/InputBar';
 import Sidebar from './components/Sidebar';
 import SettingsPanel from './components/SettingsPanel';
 import MemoryDashboard from './components/MemoryDashboard';
-import { Settings } from 'lucide-react';
+import ProactiveBanner from './components/ProactiveBanner';
+import OAuthDashboard from './pages/OAuthDashboard';
+import { Settings, Video } from 'lucide-react';
+import WebcamVisor from './components/WebcamVisor';
 
 const SERVER_URL = 'http://localhost:5000';
 
 export default function App() {
-  const { messages, status, connected, profile, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, emitEvent } =
+  const { messages, status, connected, internetConnected, profile, suggestions, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, dismissSuggestion, emitEvent, socket } =
     useSocket(SERVER_URL);
+
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [memoryOpen, setMemoryOpen] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const [oauthOpen, setOauthOpen] = useState(false);
   const [voiceSettings, setVoiceSettings] = useState({
     gender: 'male',
     language: 'en-IN',
@@ -75,12 +81,14 @@ export default function App() {
           isOpen={sidebarOpen}
           onToggle={() => setSidebarOpen(o => !o)}
           messages={messages}
+          internetConnected={internetConnected}
           onNewChat={clearMessages}
           onOpenSettings={() => setSettingsOpen(true)}
           onOpenMemory={() => {
             fetchProfile();
             setMemoryOpen(true);
           }}
+          onOpenIntegrations={() => setOauthOpen(true)}
         />
 
         {/* ── Dashboard Overlay ────────────────────────────────── */}
@@ -94,13 +102,15 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* ── Center: Voice Orb ───────────────────────────────── */}
+        {/* ── Center: Voice Orb & Live Visor ───────────────────── */}
         <div
-          className="glass flex flex-col items-center justify-center rounded-2xl shrink-0 relative overflow-hidden"
+          className="glass flex flex-col items-center justify-center rounded-2xl shrink-0 relative overflow-hidden transition-all duration-300"
           style={{
             width: 320,
             minWidth: 280,
-            transition: 'width 0.3s ease',
+            paddingTop: cameraOpen ? '70px' : '0px',
+            paddingBottom: cameraOpen ? '20px' : '0px',
+            gap: cameraOpen ? '16px' : '40px',
           }}
         >
           {/* Ambient glow top */}
@@ -112,30 +122,48 @@ export default function App() {
           />
 
           {/* Header */}
-          <div className="absolute top-0 left-0 right-0 px-5 py-4 flex items-center justify-between">
+          <div className="absolute top-0 left-0 right-0 px-5 py-4 flex items-center justify-between z-10">
             <div>
               <h1 className="text-lg font-black gradient-text" style={{ fontFamily: 'Syne, sans-serif' }}>
                 THING.AI
               </h1>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: connected ? '#00e676' : '#ff4444',
-                           boxShadow: connected ? '0 0 6px #00e676' : 'none' }} />
+                  style={{ background: connected ? (internetConnected ? '#00e676' : '#ffb300') : '#ff4444',
+                           boxShadow: connected ? (internetConnected ? '0 0 6px #00e676' : '0 0 6px #ffb300') : 'none' }} />
                 <span className="text-[10px] font-medium uppercase tracking-widest"
                   style={{ color: 'rgba(255,255,255,0.3)' }}>
-                  {connected ? 'Online' : 'Offline'}
+                  {connected ? (internetConnected ? 'Online (Cloud)' : 'Offline (Local AI)') : 'Backend Offline'}
                 </span>
               </div>
             </div>
-            <button onClick={() => setSettingsOpen(true)}
-              className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10 active:scale-95"
-              style={{ color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <Settings size={15} />
-            </button>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setCameraOpen(c => !c)}
+                title="Toggle Live Camera Visor"
+                className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10 active:scale-95"
+                style={{ 
+                  color: cameraOpen ? '#00e5ff' : 'rgba(255,255,255,0.3)', 
+                  borderColor: cameraOpen ? 'rgba(0,229,255,0.3)' : 'rgba(255,255,255,0.06)',
+                  borderWidth: '1px',
+                  boxShadow: cameraOpen ? '0 0 8px rgba(0,229,255,0.2)' : 'none',
+                }}>
+                <Video size={15} />
+              </button>
+              <button onClick={() => setSettingsOpen(true)}
+                className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10 active:scale-95"
+                style={{ color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <Settings size={15} />
+              </button>
+            </div>
           </div>
 
           {/* Voice Orb */}
           <VoiceOrb state={status.state} statusText={status.text} />
+
+          {/* Collapsible Futuristic Webcam Visor Stream */}
+          {cameraOpen && (
+            <WebcamVisor isProcessing={isProcessing} />
+          )}
 
           {/* Connection warning */}
           {!connected && (
@@ -209,6 +237,23 @@ export default function App() {
             </div>
           )}
         </AnimatePresence>
+
+        {/* ── Proactive Suggestions ───────────────────────────────────── */}
+        <ProactiveBanner 
+          suggestions={suggestions}
+          onDismiss={dismissSuggestion}
+          onAccept={(id, action) => {
+            emitEvent('suggestion_response', { id, action, accepted: true });
+            dismissSuggestion(id);
+          }}
+        />
+
+        {/* ── OAuth Integrations Dashboard ────────────────────────── */}
+        <OAuthDashboard
+          isOpen={oauthOpen}
+          onClose={() => setOauthOpen(false)}
+          socket={socket}
+        />
       </div>
     </div>
   );

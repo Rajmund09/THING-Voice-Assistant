@@ -13,7 +13,7 @@ interface Props {
   isLatest?: boolean;
 }
 
-export default function MessageBubble({ message, isLatest }: Props) {
+export default function MessageBubble({ message }: Props) {
   const [copied, setCopied] = useState(false);
   const isUser = message.speaker === 'user';
   const isSuccess = message.success !== false;

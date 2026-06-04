@@ -8,6 +8,8 @@ import { AnimatePresence } from 'framer-motion';
 import { Activity } from 'lucide-react';
 import MessageBubble, { TypingIndicator } from './MessageBubble';
 import EmailReviewCard from './EmailReviewCard';
+import VisionResultCard from './VisionResultCard';
+import CameraResultCard from './CameraResultCard';
 import type { Message } from '../hooks/useSocket';
 
 interface Props {
@@ -51,18 +53,32 @@ export default function ChatWindow({ messages, isProcessing, onAction, onEmit }:
           {/* Suggestion chips */}
           <div className="flex flex-wrap gap-2 justify-center mt-2">
             {[
-              'What\'s the time?',
+              "What's the time?",
               'Open YouTube',
-              'Take a screenshot',
+              "What's on my screen?",
               'Play punjabi songs',
             ].map(s => (
-              <div key={s}
-                className="px-3 py-1.5 rounded-full text-xs"
+              <div
+                key={s}
+                className="px-3 py-1.5 rounded-full text-xs cursor-pointer"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   color: 'rgba(255,255,255,0.35)',
-                }}>
+                  transition: 'all 0.2s',
+                }}
+                onClick={() => onAction(s)}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(0,229,255,0.08)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(0,229,255,0.2)';
+                  (e.currentTarget as HTMLElement).style.color = 'rgba(0,229,255,0.7)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
+                  (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)';
+                }}
+              >
                 {s}
               </div>
             ))}
@@ -77,11 +93,10 @@ export default function ChatWindow({ messages, isProcessing, onAction, onEmit }:
       ) : (
         /* ── Message list ────────────────────────────────────── */
         <AnimatePresence initial={false}>
-          {messages.map((msg, i) => (
+          {messages.map((msg) => (
             <div key={msg.id} className="space-y-4">
               <MessageBubble
                 message={msg}
-                isLatest={i === messages.length - 1}
               />
               
               {msg.data?.type === 'email_review' && (
@@ -95,6 +110,33 @@ export default function ChatWindow({ messages, isProcessing, onAction, onEmit }:
                       else onAction("yes");
                     }}
                     onCancel={() => onAction("no")}
+                  />
+                </div>
+              )}
+
+              {/* Vision result: renders for both vision_query and ui_click (when screenshot present) */}
+              {(msg.data?.type === 'vision_result' || (msg.data?.screenshot_b64 && msg.action === 'ui_click')) && (
+                <div className="flex justify-start ml-12">
+                  <VisionResultCard
+                    description={msg.text}
+                    screenshotB64={msg.data.screenshot_b64}
+                    elapsedMs={msg.data?.elapsed_ms}
+                    model={msg.data?.model}
+                    coordinates={msg.data?.coordinates}
+                  />
+                </div>
+              )}
+
+              {/* Camera result: renders for camera_recognition visual scans */}
+              {msg.data?.type === 'camera_result' && (
+                <div className="flex justify-start ml-12">
+                  <CameraResultCard
+                    description={msg.text}
+                    screenshotB64={msg.data.screenshot_b64}
+                    elapsedMs={msg.data?.elapsed_ms}
+                    model={msg.data?.model}
+                    people={msg.data?.people}
+                    environment={msg.data?.environment}
                   />
                 </div>
               )}

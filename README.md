@@ -2,7 +2,8 @@
 
 **THING** is a high-end AI-powered voice assistant featuring a modern **React-based Web Interface** and a powerful **Python Backend**.
 It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's LLaMA model**.
-The new V5.1 upgrade introduces an Encrypted OAuth Integrations Dashboard, full voice-controlled Spotify SDK integration, Google Calendar scheduling, Slack workplace communication, Proactive Contextual Awareness, and zero-latency local intent routing.
+The **V5.5 Supremacy Release** introduces a complete Edge-AI offline fallback utilizing Ollama (Phi-3). It seamlessly monitors internet connectivity and switches inference completely to your local machine when offline.
+The V5 series also includes an Encrypted OAuth Integrations Dashboard, full voice-controlled Spotify SDK integration, Google Calendar scheduling, Slack workplace communication, and Proactive Contextual Awareness.
 
 This project demonstrates **AI integration, automation, voice recognition, and real-world assistant capabilities**.
 
@@ -10,7 +11,11 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 
 # 🚀 Features by Phase
 
-### 🔌 V5.1 — Encrypted OAuth & SDK Integrations
+### 🔌 V5.5 — Supremacy Release (Edge AI & Offline Mode)
+* **Local Fallback Inference** – Auto-switches to Ollama (Phi-3) when offline, allowing THING to process commands entirely without an internet connection.
+* **Connectivity Engine** – Intelligent daemon that automatically handles network transitions and limits capabilities gracefully (e.g. telling you it can't reach Spotify if offline).
+
+### 🌐 V5.1 — Encrypted OAuth & SDK Integrations
 * **Encrypted OAuth Dashboard** – Connect third-party services securely. Tokens are stored encrypted via Fernet symmetric encryption and auto-refreshed transparently.
 * **Spotify SDK Integration** – Full voice-controlled playback (play tracks/playlists, pause, resume, skip, previous, and adjust volume) using native API endpoints (no browser).
 * **Google Calendar Integration** – Voice-controlled calendar query interface (events today, tomorrow, or this week) and direct event creation.
@@ -61,7 +66,8 @@ graph TD
     Comm --> Vision[V4.7: Multimodal Vision & Screen Analysis]
     Vision --> Proactive[V5.0: Proactive Contextual Awareness & Scheduler]
     Proactive --> OAuth[V5.1: Encrypted OAuth & SDK Integrations - Spotify, Google, Slack]
-    OAuth --> Current[🌟 Current State: Pro-Level AI Assistant]
+    OAuth --> Offline[V5.5: Supremacy Release - Edge AI & Offline Mode]
+    Offline --> Current[🌟 Current State: Global-Standard AI Assistant]
 ```
 
 ---
@@ -92,7 +98,7 @@ THING/
 │
 ├── backend/             # Python FastAPI backend & AI logic
 │   ├── core/            # Server, scheduler, context observer, suggestion engine
-│   ├── engine/          # Intent routing, LLM classification, and state management
+│   ├── engine/          # Intent routing, LLM classification, and local LLM fallback
 │   ├── modules/         # Integrations (Vision, UI, YouTube, WhatsApp, SMS)
 │   └── data/            # Memory and intent schemas
 │
@@ -184,9 +190,8 @@ THING integrates with external APIs using a secure local loopback OAuth callback
 
 1. Open your developer console for the respective service.
 2. Register the following **Redirect URI / Callback URL** exactly:
-   ```text
-   http://127.0.0.1:5000/oauth/callback
-   ```
+   * **Spotify**: `http://127.0.0.1:5000/oauth/callback`
+   * **Google, Microsoft, Notion, Slack**: `http://localhost:5000/oauth/callback`
 3. Add your client credentials to your local `.env` file (see `.env.example` for details).
 4. Run the assistant backend and frontend:
    - Backend: `python main.py`

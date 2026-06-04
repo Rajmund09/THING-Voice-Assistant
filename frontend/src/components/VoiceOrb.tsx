@@ -70,7 +70,6 @@ export default function VoiceOrb({ state, statusText }: VoiceOrbProps) {
                 <motion.div
                   key={i}
                   className="absolute rounded-full border"
-                  style={{ borderColor: 'rgba(0,229,255,0.4)' }}
                   initial={{ scale: 0.8, opacity: 0.8 }}
                   animate={{ scale: 1.6 + i * 0.2, opacity: 0 }}
                   exit={{ opacity: 0 }}

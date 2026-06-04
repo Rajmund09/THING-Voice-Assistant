@@ -1,4 +1,90 @@
-[
-  "my birthday is 5th june",
-  "my name is raj"
-]
+{
+    "preferences": {},
+    "chat_history": [
+        {
+            "speaker": "user",
+            "text": "english"
+        },
+        {
+            "speaker": "assistant",
+            "text": "\"Hello Raj!\""
+        },
+        {
+            "speaker": "user",
+            "text": "what's on my calendar"
+        },
+        {
+            "speaker": "assistant",
+            "text": "Checking your digital calendar... You have a meeting with your team at 2 PM today, and a project deadline looming for SkillTrack."
+        },
+        {
+            "speaker": "user",
+            "text": "hi"
+        },
+        {
+            "speaker": "assistant",
+            "text": "No changes to your schedule, Raj. The meeting and deadline remain in place. Would you like me to remind you or assist with the project?"
+        },
+        {
+            "speaker": "user",
+            "text": "hii"
+        },
+        {
+            "speaker": "assistant",
+            "text": "Reminders and deadlines are still in place. SkillTrack project deadline is still due soon. Need help with anything?"
+        },
+        {
+            "speaker": "user",
+            "text": "hi"
+        },
+        {
+            "speaker": "assistant",
+            "text": "Nothing new since last update, Raj. Team meeting at 2 PM still scheduled. SkillTrack project deadline looms. What do you need help with?"
+        }
+    ],
+    "command_history": [
+        {
+            "cmd": "{'action': 'spotify_play', 'query': 'youtube blinding lights'}",
+            "res": "Playing 'Blinding Lights' by The Weeknd on Spotify."
+        },
+        {
+            "cmd": "{'action': 'spotify_skip'}",
+            "res": "Skipped to the next track."
+        },
+        {
+            "cmd": "{'action': 'spotify_play', 'query': 'youtube sambalpuri song'}",
+            "res": "Playing 'Sambalpuri Sadhi' by Shiba Pradhan on Spotify."
+        },
+        {
+            "cmd": "{'action': 'play_youtube', 'query': 'youtube lovely'}",
+            "res": "Searching for youtube lovely on YouTube."
+        },
+        {
+            "cmd": "{'action': 'search_web', 'query': 'searching for youtube lovely on youtube'}",
+            "res": "Searching for 'searching for youtube lovely on youtube'."
+        },
+        {
+            "cmd": "{'action': 'play_youtube', 'query': 'youtube billie eilish - lovely (lyrics) ft. khalid in spotify'}",
+            "res": "Searching for youtube billie eilish lovely khalid in spotify on YouTube."
+        },
+        {
+            "cmd": "{'action': 'search_web', 'query': 'for youtube'}",
+            "res": "Searching for 'for youtube'."
+        },
+        {
+            "cmd": "{'action': 'send_number_msg', 'phone_number': '7848077813', 'message': 'message hi'}",
+            "res": "Sending WhatsApp message to 7848077813. I'll focus the window and send it automatically in a few seconds."
+        },
+        {
+            "cmd": "{'action': 'send_number_msg', 'phone_number': '7848077813', 'message': 'hii'}",
+            "res": "Sending WhatsApp message to 7848077813. I'll focus the window and send it automatically in a few seconds."
+        },
+        {
+            "cmd": "{'action': 'send_number_msg', 'phone_number': '7848077813', 'message': 'hii'}",
+            "res": "Sending WhatsApp message to 7848077813. I'll focus the window and send it automatically in a few seconds."
+        }
+    ],
+    "context": {
+        "active_app": "spotify"
+    }
+}

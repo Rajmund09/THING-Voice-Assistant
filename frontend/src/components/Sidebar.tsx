@@ -4,19 +4,21 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquarePlus, ChevronLeft, ChevronRight, Settings, Clock, Zap, Database } from 'lucide-react';
+import { MessageSquarePlus, ChevronLeft, ChevronRight, Settings, Clock, Zap, Database, Plug } from 'lucide-react';
 import type { Message } from '../hooks/useSocket';
 
 interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
   messages: Message[];
+  internetConnected: boolean;
   onNewChat: () => void;
   onOpenSettings: () => void;
   onOpenMemory: () => void;
+  onOpenIntegrations: () => void;
 }
 
-export default function Sidebar({ isOpen, onToggle, messages, onNewChat, onOpenSettings, onOpenMemory }: SidebarProps) {
+export default function Sidebar({ isOpen, onToggle, messages, internetConnected, onNewChat, onOpenSettings, onOpenMemory, onOpenIntegrations }: SidebarProps) {
   // Build a session summary from messages
   const sessionCount = messages.filter(m => m.speaker === 'user').length;
 
@@ -51,9 +53,29 @@ export default function Sidebar({ isOpen, onToggle, messages, onNewChat, onOpenS
                     THING<span style={{ color: '#00e5ff' }}>.AI</span>
                   </div>
                   <div className="text-[10px] font-medium" style={{ color: 'rgba(0,229,255,0.5)' }}>
-                    v4.0 — Production
+                    v5.5 — Supremacy Edition
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Network Badge */}
+            <div className="px-5 pb-4">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border"
+                style={{ 
+                  background: internetConnected ? 'rgba(0,230,118,0.05)' : 'rgba(255,179,0,0.05)',
+                  borderColor: internetConnected ? 'rgba(0,230,118,0.2)' : 'rgba(255,179,0,0.2)',
+                }}>
+                <div className="w-1.5 h-1.5 rounded-full"
+                  style={{ 
+                    background: internetConnected ? '#00e676' : '#ffb300',
+                    boxShadow: internetConnected ? '0 0 6px #00e676' : '0 0 6px #ffb300' 
+                  }} 
+                />
+                <span className="text-[10px] font-bold uppercase tracking-widest"
+                  style={{ color: internetConnected ? '#00e676' : '#ffb300' }}>
+                  {internetConnected ? 'Cloud AI Active' : 'Local AI Active'}
+                </span>
               </div>
             </div>
 
@@ -106,7 +128,7 @@ export default function Sidebar({ isOpen, onToggle, messages, onNewChat, onOpenS
             {/* Divider */}
             <div className="mx-4 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
 
-            {/* Memory & Settings */}
+            {/* Memory, Integrations & Settings */}
             <div className="px-3 py-3 space-y-1">
               <button
                 onClick={onOpenMemory}
@@ -114,6 +136,14 @@ export default function Sidebar({ isOpen, onToggle, messages, onNewChat, onOpenS
               >
                 <Database size={16} />
                 <span>Memory</span>
+              </button>
+              <button
+                id="sidebar-integrations-btn"
+                onClick={onOpenIntegrations}
+                className="sidebar-item w-full"
+              >
+                <Plug size={16} />
+                <span>Integrations</span>
               </button>
               <button
                 onClick={onOpenSettings}

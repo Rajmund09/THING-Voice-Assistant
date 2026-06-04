@@ -3,7 +3,7 @@
  * Premium input bar with mic, stop, and send buttons.
  */
 
-import { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, type KeyboardEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Mic, Square } from 'lucide-react';
 

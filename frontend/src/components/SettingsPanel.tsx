@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { X, Zap, Wifi, Shield, Cpu, Volume2, Mic, Globe, User, Activity } from 'lucide-react';
+import { X, Zap, Wifi, Shield, Volume2, Globe, User, Activity } from 'lucide-react';
 
 interface VoiceSettings {
   gender: string;

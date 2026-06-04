@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { X, User, Briefcase, GraduationCap, Target, Heart, ShieldCheck, Database } from 'lucide-react';
+import { X, User, Briefcase, Target, Heart, ShieldCheck, Database } from 'lucide-react';
 
 interface Props {
   isOpen: boolean;

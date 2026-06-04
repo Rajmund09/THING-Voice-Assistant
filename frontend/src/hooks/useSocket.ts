@@ -22,6 +22,14 @@ export interface StatusState {
   text: string;
 }
 
+export interface Suggestion {
+  id: string;
+  message: string;
+  action: string;
+  icon: string;
+  dismissible: boolean;
+}
+
 // ── Message Deduplication Reducer ────────────────────────────────────────────
 type MsgAction =
   | { type: 'ADD'; payload: Message }
@@ -46,7 +54,9 @@ export function useSocket(serverUrl: string) {
   const [messages, dispatch] = useReducer(msgReducer, []);
   const [status, setStatus] = useState<StatusState>({ state: 'disconnected', text: 'Offline' });
   const [connected, setConnected] = useState(false);
+  const [internetConnected, setInternetConnected] = useState(true);
   const [profile, setProfile] = useState<any>(null);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -70,6 +80,10 @@ export function useSocket(serverUrl: string) {
 
     socket.on('status', (data: { state: string; text: string }) => {
       setStatus({ state: data.state as StatusState['state'], text: data.text });
+    });
+
+    socket.on('connectivity_status', (data: { online: boolean }) => {
+      setInternetConnected(data.online);
     });
 
     socket.on('profile_data', (data: any) => {
@@ -113,6 +127,15 @@ export function useSocket(serverUrl: string) {
       });
     });
 
+    socket.on('proactive_suggestion', (suggestion: Suggestion) => {
+      setSuggestions(prev => {
+        // Prevent duplicates
+        if (prev.some(s => s.id === suggestion.id)) return prev;
+        // Keep only last 3
+        return [...prev.slice(-2), suggestion];
+      });
+    });
+
     return () => {
       socket.removeAllListeners();
       socket.close();
@@ -140,9 +163,13 @@ export function useSocket(serverUrl: string) {
     dispatch({ type: 'CLEAR' });
   }, []);
 
+  const dismissSuggestion = useCallback((id: string) => {
+    setSuggestions(prev => prev.filter(s => s.id !== id));
+  }, []);
+
   const emitEvent = useCallback((event: string, data: any) => {
     socketRef.current?.emit(event, data);
   }, []);
 
-  return { messages, status, connected, profile, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, emitEvent };
+  return { messages, status, connected, internetConnected, profile, suggestions, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, dismissSuggestion, emitEvent, socket: socketRef.current };
 }
