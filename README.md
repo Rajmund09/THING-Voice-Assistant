@@ -35,7 +35,8 @@ This project demonstrates **AI integration, automation, voice recognition, and r
 ### 💬 V4.6 — Communication Suite (SMS & Email)
 * **Email & SMS Review Cards** – Draft and preview emails or SMS messages with interactive review cards in the browser before sending.
 
-### 🌌 V4.5 — Premium UI & WebSockets
+### 🌌 V4.5 — Premium UI & Animated Desktop Pet
+* **Interactive Desktop Pet** – A dynamic, animated companion (using GIF and PNG assets) that reflects the assistant's current state (idle, listening, thinking, speaking, typing, etc.).
 * **Glassmorphism Web UI** – Ultra-responsive front-end dashboard styled with React, Tailwind CSS, and Framer Motion.
 * **Real-time WebSockets** – Socket.io interface for instantaneous, two-way status updates and message synchronization.
 
