@@ -34,3 +34,7 @@ google-auth-httplib2>=0.2.0
 google-auth-oauthlib>=1.2.0
 msal>=1.28.0
 cryptography>=42.0.0
+
+# ── Phase 6 Dependencies ────────────────────────────────────────────
+PyQt6>=6.6.0
+python-socketio[client]>=5.11.0
