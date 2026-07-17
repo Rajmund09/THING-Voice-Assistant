@@ -1,47 +1,73 @@
 """
 hallucination_guard.py — THING Jarvis Upgrade
-Prevents fabrication of sensitive data and inconsistent identity responses.
+Prevents fabrication of sensitive data and inconsistent identity responses using an LLM.
 """
 
-import re
+import os
+import json
+import logging
+from typing import Dict, Any
+from groq import Groq
+from dotenv import load_dotenv
 from backend.modules.identity_manager import IDENTITY
 
-# Patterns for sensitive data that should NEVER be fabricated
-SENSITIVE_PATTERNS = [
-    r"\b\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}\b",  # Credit Card
-    r"\b\d{11,18}\b",                            # Generic Bank Account Number (11+ digits)
-    r"balance is \d+",                           # Fake bank balance
-    r"account number:? \d+",                     # Explicit account number claim
-]
+load_dotenv(override=True)
+logger = logging.getLogger(__name__)
 
-# Identity keywords that might trigger a conflict
-IDENTITY_KEYWORDS = ["made you", "developed you", "created you", "your developer", "who are you"]
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+LLM_MODEL = "llama-3.1-8b-instant"
 
 def validate_response(response: str, query: str) -> str:
     """
     Checks if the assistant's response contains hallucinations.
-    If it does, returns a safe fallback.
+    Uses an LLM to dynamically evaluate the response.
+    Returns a safe fallback if hallucinations or sensitive data leaks are detected.
     """
-    res_lower = response.lower()
-    
-    # 1. Check for fabricated sensitive data
-    # Bypass check if the user is clearly performing a messaging action (legitimate number usage)
-    MESSAGING_KEYWORDS = ["send", "message", "msg", "text", "whatsapp", "sms", "email"]
-    is_messaging = any(k in query.lower() for k in MESSAGING_KEYWORDS)
-    
-    if not is_messaging:
-        for pattern in SENSITIVE_PATTERNS:
-            if re.search(pattern, response):
-                return "I don't have verified information about private data or bank accounts."
+    try:
+        from backend.core.connectivity_monitor import monitor as connectivity_monitor
+        if not connectivity_monitor.is_online():
+            # If offline, just return response since LLM check won't work
+            return response
+            
+        SYSTEM_PROMPT = f"""You are a security validation module for an AI assistant.
+Your job is to detect if the assistant's response contains hallucinations, fabricates sensitive data (like fake bank balances, credit card numbers, or SSNs), or hallucinates an incorrect identity.
+The assistant's name is THING, and its creator is {IDENTITY.get('creator', 'Raj')}.
 
-    # 2. Check for Identity conflicts
-    # If the user asked about identity and the response mentions something other than Raj
-    query_lower = query.lower()
-    if any(k in query_lower for k in IDENTITY_KEYWORDS):
-        if "raj" not in res_lower and any(wrong in res_lower for wrong in ["meta", "google", "openai", "openai", "anthropic"]):
-            return f"I am THING, your personal AI assistant created for {IDENTITY['creator']}'s project."
+User Query: {query}
+Assistant Response: {response}
 
-    return response
+Output format: Return ONLY a JSON object with two keys:
+"is_safe": boolean (true if safe, false if it contains hallucinations or sensitive data fabrication)
+"reason": short string explanation
+
+Consider it NOT SAFE if:
+1. It claims to be an AI from OpenAI, Anthropic, Google, or Meta instead of THING.
+2. It hallucinates private financial data, account numbers, or balances that weren't in the user's prompt (unless the user asked to send a message containing those).
+"""
+        
+        res = client.chat.completions.create(
+            model=LLM_MODEL,
+            messages=[{"role": "user", "content": SYSTEM_PROMPT}],
+            response_format={"type": "json_object"},
+            max_tokens=150,
+            temperature=0.0
+        )
+        
+        raw_result = res.choices[0].message.content
+        result = json.loads(raw_result)
+        
+        if not result.get("is_safe", True):
+            logger.warning("Hallucination guard blocked response. Reason: %s", result.get("reason"))
+            reason_lower = result.get("reason", "").lower()
+            if "identity" in reason_lower or "creator" in reason_lower or "name" in reason_lower:
+                return f"I am THING, your personal AI assistant created for {IDENTITY.get('creator', 'Raj')}'s project."
+            return "I don't have verified information about private data or bank accounts."
+            
+        return response
+    except Exception as e:
+        logger.error("Hallucination guard LLM error: %s", e)
+        # Fallback to returning the response if the check fails
+        return response
 
 def get_confidence_score(response: str) -> float:
     """
