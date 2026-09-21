@@ -44,15 +44,19 @@ class ConnectivityMonitor(threading.Thread):
             time.sleep(self.check_interval)
 
     def _check_connection(self) -> bool:
-        try:
-            urllib.request.urlopen('http://1.1.1.1', timeout=1)
-            return True
-        except Exception:
+        targets = [
+            'https://www.google.com',
+            'https://dns.google',
+            'https://www.cloudflare.com',
+        ]
+        for url in targets:
             try:
-                urllib.request.urlopen('http://8.8.8.8', timeout=1)
+                req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                urllib.request.urlopen(req, timeout=3)
                 return True
             except Exception:
-                return False
+                continue
+        return False
 
 # Global instance
 monitor = ConnectivityMonitor()
