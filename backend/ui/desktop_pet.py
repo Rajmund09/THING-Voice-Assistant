@@ -124,7 +124,7 @@ class DesktopPet(QWidget):
 
         # Revert after a fixed period for transient states
         self.revert_timer.stop()
-        if state in ('listening', 'thinking', 'speaking'):
+        if state in ('listening', 'thinking', 'speaking', 'scrolling'):
             self.revert_timer.start(6000)
 
         self._load_gif(state)

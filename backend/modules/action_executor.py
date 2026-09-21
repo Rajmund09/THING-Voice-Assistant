@@ -14,6 +14,14 @@ from backend.modules.browser_ops import scroll_screen, type_and_send, browser_na
 from backend.engine.memory_engine import memory
 from backend.engine.state_manager import state_manager
 
+def _emit_status(state: str, text: str):
+    """Safely emit a socket status without circular import."""
+    try:
+        from backend.core.server import socketio
+        socketio.emit("status", {"state": state, "text": text})
+    except Exception:
+        pass
+
 
 def execute_actions(actions: List[Dict[str, Any]]) -> str:
     """
@@ -103,7 +111,12 @@ def _execute_single(action: Dict[str, Any], act_type: str) -> str:
             return str(res) if res else "Something went wrong with the email flow."
 
         elif act_type == "scroll_screen":
-            return scroll_screen(action.get("direction", "down"), action.get("amount", 300))
+            direction = action.get("direction", "down")
+            amount = action.get("amount", 300)
+            _emit_status("scrolling", f"Scrolling {direction}...")
+            result = scroll_screen(direction, amount)
+            _emit_status("idle", "Done")
+            return result
 
         elif act_type == "type_and_send":
             return type_and_send(action.get("text", ""), action.get("press_enter", False))
