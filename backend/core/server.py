@@ -8,6 +8,8 @@ import uuid
 import json
 import threading
 import webbrowser
+import subprocess
+import sys
 from flask import Flask, request, jsonify
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
@@ -22,6 +24,7 @@ socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 
 ASSISTANT_RUNNING = True
 _tts_rate = 1
+pet_process = None
 
 # Deduplication state
 _last_command_text = ""
@@ -108,6 +111,17 @@ def handle_voice_settings(data):
         audio.speak(test_msg)
         
     emit("status", {"state": "idle", "text": "Voice settings updated"})
+
+@socketio.on("toggle_pet")
+def handle_toggle_pet():
+    global pet_process
+    if pet_process is None or pet_process.poll() is not None:
+        pet_process = subprocess.Popen([sys.executable, "backend/ui/desktop_pet.py"])
+        emit("status", {"state": "idle", "text": "Pet spawned"})
+    else:
+        pet_process.terminate()
+        pet_process = None
+        emit("status", {"state": "idle", "text": "Pet removed"})
 
 
 @socketio.on("get_profile")

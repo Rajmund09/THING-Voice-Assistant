@@ -163,6 +163,10 @@ export function useSocket(serverUrl: string) {
     dispatch({ type: 'CLEAR' });
   }, []);
 
+  const togglePet = useCallback(() => {
+    socketRef.current?.emit('toggle_pet');
+  }, []);
+
   const dismissSuggestion = useCallback((id: string) => {
     setSuggestions(prev => prev.filter(s => s.id !== id));
   }, []);
@@ -171,5 +175,5 @@ export function useSocket(serverUrl: string) {
     socketRef.current?.emit(event, data);
   }, []);
 
-  return { messages, status, connected, internetConnected, profile, suggestions, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, dismissSuggestion, emitEvent, socket: socketRef.current };
+  return { messages, status, connected, internetConnected, profile, suggestions, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, dismissSuggestion, emitEvent, togglePet, socket: socketRef.current };
 }

@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquarePlus, ChevronLeft, ChevronRight, Settings, Clock, Zap, Database, Plug } from 'lucide-react';
+import { MessageSquarePlus, ChevronLeft, ChevronRight, Settings, Clock, Zap, Database, Plug, Dog } from 'lucide-react';
 import type { Message } from '../hooks/useSocket';
 
 interface SidebarProps {
@@ -16,9 +16,10 @@ interface SidebarProps {
   onOpenSettings: () => void;
   onOpenMemory: () => void;
   onOpenIntegrations: () => void;
+  onTogglePet: () => void;
 }
 
-export default function Sidebar({ isOpen, onToggle, messages, internetConnected, onNewChat, onOpenSettings, onOpenMemory, onOpenIntegrations }: SidebarProps) {
+export default function Sidebar({ isOpen, onToggle, messages, internetConnected, onNewChat, onOpenSettings, onOpenMemory, onOpenIntegrations, onTogglePet }: SidebarProps) {
   // Build a session summary from messages
   const sessionCount = messages.filter(m => m.speaker === 'user').length;
 
@@ -144,6 +145,13 @@ export default function Sidebar({ isOpen, onToggle, messages, internetConnected,
               >
                 <Plug size={16} />
                 <span>Integrations</span>
+              </button>
+              <button
+                onClick={onTogglePet}
+                className="sidebar-item w-full"
+              >
+                <Dog size={16} />
+                <span>Toggle Pet</span>
               </button>
               <button
                 onClick={onOpenSettings}

@@ -21,7 +21,7 @@ import WebcamVisor from './components/WebcamVisor';
 const SERVER_URL = 'http://localhost:5000';
 
 export default function App() {
-  const { messages, status, connected, internetConnected, profile, suggestions, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, dismissSuggestion, emitEvent, socket } =
+  const { messages, status, connected, internetConnected, profile, suggestions, sendCommand, stopSpeaking, updateVoiceSettings, fetchProfile, clearMessages, dismissSuggestion, emitEvent, togglePet, socket } =
     useSocket(SERVER_URL);
 
 
@@ -89,6 +89,7 @@ export default function App() {
             setMemoryOpen(true);
           }}
           onOpenIntegrations={() => setOauthOpen(true)}
+          onTogglePet={togglePet}
         />
 
         {/* ── Dashboard Overlay ────────────────────────────────── */}
