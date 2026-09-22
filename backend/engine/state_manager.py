@@ -34,6 +34,7 @@ class StateManager:
         self.last_command: Optional[str] = None
         self.context: Dict[str, Any] = {}
         self.last_activity_time: float = time.monotonic()
+        self.pending_action_time: float = 0.0  # when WAIT_CONFIRMATION started
 
     # ─── State Control ───────────────────────────────────────────
 
@@ -60,7 +61,14 @@ class StateManager:
 
     def set_pending_action(self, action: Dict[str, Any]):
         self.pending_action = action
+        self.pending_action_time = time.monotonic()
         self.set_state(AssistantState.WAIT_CONFIRMATION)
+
+    def is_confirmation_timed_out(self, timeout_seconds: float = 30.0) -> bool:
+        """Returns True if assistant has been waiting for confirmation longer than timeout."""
+        if self.current_state != AssistantState.WAIT_CONFIRMATION:
+            return False
+        return (time.monotonic() - self.pending_action_time) > timeout_seconds
 
     def clear_pending_action(self):
         self.pending_action = None

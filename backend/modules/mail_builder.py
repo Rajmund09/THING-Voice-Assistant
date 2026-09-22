@@ -26,7 +26,7 @@ def generate_mail_content(topic: str, context: str = "") -> dict:
     """Auto-generates email subject and body based on a topic."""
     try:
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b"),
             messages=[
                 {"role": "system", "content": MAIL_GEN_PROMPT.format(topic=topic, context=context)}
             ],

@@ -324,7 +324,7 @@ Chat History:
 """
     try:
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b"),
             messages=[
                 {"role": "system", "content": "You are THING, summarizing the user's day based on historical interactions. Be concise and conversational."},
                 {"role": "user", "content": prompt}

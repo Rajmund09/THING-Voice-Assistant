@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────────────────────────
 
 MIN_CONFIDENCE  = 0.55   # Discard results below this threshold
-LLM_MODEL       = "llama-3.1-8b-instant"
+LLM_MODEL       = os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b")
 MAX_TOKENS      = 128
 TIMEOUT_SECONDS = 5.0    # Hard deadline for LLM call
 

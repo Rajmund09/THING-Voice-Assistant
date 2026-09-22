@@ -162,7 +162,7 @@ export default function OAuthDashboard({ isOpen, onClose, socket }: OAuthDashboa
       } catch {
         // ignore
       }
-    }, 2000);
+    }, 5000); // 5s fallback poll — WebSocket oauth_connected handles real-time updates
     // Auto-stop polling after 2 minutes
     const timeout = setTimeout(() => {
       clearInterval(interval);

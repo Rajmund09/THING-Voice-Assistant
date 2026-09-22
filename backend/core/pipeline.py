@@ -65,6 +65,10 @@ def process_pipeline(raw_command: str, bypass_confirm: bool = False) -> dict:
         return build_response_packet("camera_registration", res, success=True)
 
     try:
+        # Auto-cancel stale confirmations (30s timeout) before routing
+        if state_manager.is_confirmation_timed_out(30.0):
+            print("[Pipeline] Confirmation timed out — auto-cancelling pending action.")
+            state_manager.clear_pending_action()
         routed = route_intent(clean_command)
     except Exception as e:
         print(f"[Pipeline] Router error: {e}")
@@ -164,7 +168,8 @@ def process_pipeline(raw_command: str, bypass_confirm: bool = False) -> dict:
                         state_manager.set_active_app(intent.get("app_name", ""))
                     elif intent["action"] == "close_app":
                         state_manager.clear_active_app()
-                    return _build_from_result(result, intent["action"], clean_command)
+                    # skip_guard=True: regex-matched actions have no LLM output → no hallucination risk
+                    return _build_from_result(result, intent["action"], clean_command, skip_guard=True)
                 except Exception as e:
                     return error_packet(intent["action"], f"Failed: {str(e)}")
 
@@ -226,11 +231,12 @@ def process_pipeline(raw_command: str, bypass_confirm: bool = False) -> dict:
 
 from backend.security.hallucination_guard import validate_response
 
-def _build_from_result(result, action_name: str, raw_command: str = "") -> dict:
+def _build_from_result(result, action_name: str, raw_command: str = "", skip_guard: bool = False) -> dict:
     """
     Converts executor result (str or dict) to a ResponsePacket.
     Anti-hallucination: never claims success if result signals failure.
     Special case: vision_query results carry screenshot_b64 for the frontend.
+    skip_guard=True: skip LLM hallucination check (used for regex-routed actions).
     """
     # ── Camera result: structured dict with people/environment details ────
     if isinstance(result, dict) and result.get("_vision") and ("people" in result or "environment" in result):
@@ -280,8 +286,9 @@ def _build_from_result(result, action_name: str, raw_command: str = "") -> dict:
     if success and (not msg or msg.strip().lower() in ["", "task completed.", "no output"]):
         msg = "Done."
 
-    # Final validation layer
-    msg = validate_response(msg, raw_command)
+    # Final validation layer — skip for direct regex actions (no LLM output)
+    if not skip_guard:
+        msg = validate_response(msg, raw_command)
 
     return build_response_packet(action_name, msg, success=success, data=result.get("data") if isinstance(result, dict) else None)
 

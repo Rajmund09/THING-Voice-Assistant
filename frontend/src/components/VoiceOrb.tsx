@@ -10,8 +10,23 @@ import { Mic, MicOff } from 'lucide-react';
 type OrbState = 'idle' | 'listening' | 'processing' | 'speaking' | 'disconnected';
 
 interface VoiceOrbProps {
-  state: OrbState;
+  state: string; // Accept any server state string
   statusText: string;
+}
+
+/** Map any server-emitted state to a visual OrbState */
+function toOrbState(serverState: string): OrbState {
+  switch (serverState) {
+    case 'listening':                       return 'listening';
+    case 'speaking':                        return 'speaking';
+    case 'processing':
+    case 'thinking':
+    case 'scrolling':
+    case 'typing':
+    case 'clicking':                        return 'processing';
+    case 'disconnected':                    return 'disconnected';
+    default:                                return 'idle';
+  }
 }
 
 // ── State configs ─────────────────────────────────────────────────────────────
@@ -54,7 +69,8 @@ const STATE_CONFIG = {
 };
 
 export default function VoiceOrb({ state, statusText }: VoiceOrbProps) {
-  const cfg = STATE_CONFIG[state] ?? STATE_CONFIG.idle;
+  const orbState = toOrbState(state);
+  const cfg = STATE_CONFIG[orbState] ?? STATE_CONFIG.idle;
 
   return (
     <div className="flex flex-col items-center justify-center gap-8 select-none">

@@ -101,9 +101,17 @@ class DesktopPet(QWidget):
 
     # ── Qt slot — runs on main thread ─────────────────────────────────────────
     def _on_state_changed(self, state: str):
-        # Don't interrupt walking with minor state blips
+        import time
+        now = time.monotonic()
+        # Debounce: ignore rapid state blips < 300ms after last change
+        if hasattr(self, '_last_state_time') and (now - self._last_state_time) < 0.3:
+            # Only allow urgent states (thinking/listening/speaking) to interrupt immediately
+            if state not in ('thinking', 'listening', 'speaking', 'scrolling'):
+                return
+        # Don't interrupt walking with idle blips
         if state in ('idle',) and self.current_state in ('walking', 'walking_left'):
             return
+        self._last_state_time = now
         self._set_state(state)
 
     # ── State management ─────────────────────────────────────────────────────
@@ -124,8 +132,9 @@ class DesktopPet(QWidget):
 
         # Revert after a fixed period for transient states
         self.revert_timer.stop()
-        if state in ('listening', 'thinking', 'speaking', 'scrolling'):
-            self.revert_timer.start(6000)
+        if state in ('listening', 'thinking', 'speaking', 'scrolling', 'typing', 'clicking'):
+            duration = 4000 if state in ('typing', 'clicking') else 6000
+            self.revert_timer.start(duration)
 
         self._load_gif(state)
 
@@ -144,7 +153,9 @@ class DesktopPet(QWidget):
             path = os.path.join(ASSETS_DIR, f'{state}.gif')
 
         if not os.path.exists(path):
-            path = os.path.join(ASSETS_DIR, 'thinking.gif')
+            # Fallback chain: try thinking.gif as universal placeholder
+            fallback = os.path.join(ASSETS_DIR, 'thinking.gif')
+            path = fallback if os.path.exists(fallback) else path
 
         # Stop previous movie
         if self.movie:

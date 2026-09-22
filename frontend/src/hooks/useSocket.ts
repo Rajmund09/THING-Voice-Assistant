@@ -103,6 +103,18 @@ export function useSocket(serverUrl: string) {
       });
     });
 
+    // Restore chat history on reconnect (Task 13)
+    socket.on('conversation_history', (data: { messages: Array<{cmd: string; res: string}> }) => {
+      data.messages.forEach((m, i) => {
+        if (m.cmd) {
+          dispatch({ type: 'ADD', payload: { id: `hist-u-${i}`, speaker: 'user', text: m.cmd, timestamp: Date.now() - (data.messages.length - i) * 1000 } });
+        }
+        if (m.res) {
+          dispatch({ type: 'ADD', payload: { id: `hist-t-${i}`, speaker: 'thing', text: m.res, success: true, timestamp: Date.now() - (data.messages.length - i) * 900 } });
+        }
+      });
+    });
+
     // THING response packet — single source of truth
     socket.on('response', (packet: {
       id: string;

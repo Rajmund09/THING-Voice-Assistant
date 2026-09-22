@@ -68,5 +68,9 @@ class MemoryEngine:
         self.memory["context"] = {}
         self.save_memory()
 
+    def get_recent_commands(self, n: int = 20) -> List[Dict[str, str]]:
+        """Returns last N command/response pairs for chat history restoration."""
+        return self.memory.get("command_history", [])[-n:]
+
 # Global memory instance
 memory = MemoryEngine()

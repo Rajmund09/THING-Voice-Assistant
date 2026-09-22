@@ -64,7 +64,7 @@ def plan_actions(command: str) -> List[Dict[str, Any]]:
     """
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model=os.getenv("GROQ_SMART_MODEL", "openai/gpt-oss-20b"),
             messages=[
                 {"role": "system", "content": PLANNER_SYSTEM},
                 {"role": "user", "content": command},

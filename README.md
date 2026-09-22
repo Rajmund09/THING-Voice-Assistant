@@ -1,15 +1,27 @@
 # 🔊 THING – AI Voice Assistant (Python + React)
 
 **THING** is a high-end AI-powered voice assistant featuring a modern **React-based Web Interface** and a powerful **Python Backend**.
-It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's LLaMA model**.
-The **V5.5 Supremacy Release** introduces a complete Edge-AI offline fallback utilizing Ollama (Phi-3). It seamlessly monitors internet connectivity and switches inference completely to your local machine when offline.
-The V5 series also includes an Encrypted OAuth Integrations Dashboard, full voice-controlled Spotify SDK integration, Google Calendar scheduling, Slack workplace communication, and Proactive Contextual Awareness.
+It performs system automation, plays music, fetches news, opens apps/websites, and can even **chat intelligently using Groq's cloud LLM models**.
+The **V6.0 Full-Stack Upgrade** migrates all deprecated Groq models to `openai/gpt-oss-20b`, fixes the WhatsApp confirmation state loop, hardens the Spotify OAuth callback with URL-embedded state parameters, adds exponential backoff for failed OAuth token refresh, and introduces five new desktop pet animation states (`scrolling`, `typing`, `clicking`, `walking`, `walking_left`).
+The V5.5 Supremacy Release introduced a complete Edge-AI offline fallback utilizing Ollama (Phi-3), seamlessly monitoring internet connectivity and switching inference completely to your local machine when offline.
 
 This project demonstrates **AI integration, automation, voice recognition, and real-world assistant capabilities**.
 
 ---
 
 # 🚀 Features by Phase
+
+### ⚡ V6.0 — Full-Stack Fix & Upgrade
+* **Groq Model Migration** – All 9 LLM call sites migrated from deprecated `llama-3.1-8b-instant` / `llama-3.3-70b-versatile` to `openai/gpt-oss-20b` via `.env` config vars (`GROQ_FAST_MODEL`, `GROQ_SMART_MODEL`).
+* **Confirmation State Escape Hatch** – Sending a real command while in `WAIT_CONFIRMATION` (e.g., "scroll down" after a WhatsApp request) now cancels the pending action and executes the new command immediately.
+* **30-Second Confirmation Timeout** – Pending actions (e.g., send WhatsApp) auto-cancel after 30 seconds if not confirmed, unblocking the assistant.
+* **Spotify OAuth Hardening** – Service name embedded in OAuth `state` parameter so the callback works even after browser redirects clear the in-memory global.
+* **OAuth Exponential Backoff** – Failed token refreshes (e.g., Notion 401) back off exponentially (2m → 4m → 8m → 30m max) instead of spamming every 15 seconds.
+* **Desktop Pet New States** – `typing`, `clicking`, `scrolling` animations with automatic 4–6s revert. 300ms state debounce eliminates flickering.
+* **VoiceOrb State Sync** – All server states (`scrolling`, `thinking`, `typing`, `clicking`) correctly map to visual orb states.
+* **Chat History Persistence** – Last 20 conversations restored on page reload via `conversation_history` WebSocket event.
+* **Fuzzy Typo Correction** – Entity resolver now handles 40+ common typos + `difflib` fuzzy matching as fallback.
+* **Hallucination Guard Skip** – Regex-matched direct actions skip the LLM guard call, reducing latency by ~600ms.
 
 ### 🔌 V5.5 — Supremacy Release (Edge AI & Offline Mode)
 * **Local Fallback Inference** – Auto-switches to Ollama (Phi-3) when offline, allowing THING to process commands entirely without an internet connection.

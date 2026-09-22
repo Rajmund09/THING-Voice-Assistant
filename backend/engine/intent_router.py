@@ -73,8 +73,10 @@ PATTERNS = [
     (r"^(open|start|launch)\s+(camera|webcam)$",               "open_camera"),
 
     # ── Scrolling ────────────────────────────────────────────────
-    (r"^(scroll)\s+(up|down)(?:\s+(\d+))?$",             "scroll_screen"),
+    (r"^scroll(?:\s+(?:the\s+)?(?:page|screen))?\s+(up|down)(?:\s+(\d+))?$", "scroll_screen"),
+    (r"^scroll(?:\s+(?:slowly|a\s+little|a\s+bit))?$",                        "scroll_screen"),
     (r"^(?:go\s+|scroll\s+)?(to\s+)?(top|bottom)(?:\s+(?:of\s+)?(?:the\s+)?page)?$", "scroll_edge"),
+    (r"^page\s+(up|down)$",                                                    "scroll_screen"),
 
     # ── System / Power ──────────────────────────────────────────
     (r"^(lock)(?:\s+(?:my\s+)?(?:pc|computer|laptop|screen))?$",       "power_control_lock"),

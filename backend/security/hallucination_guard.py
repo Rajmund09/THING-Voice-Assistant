@@ -15,7 +15,7 @@ load_dotenv(override=True)
 logger = logging.getLogger(__name__)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-LLM_MODEL = "llama-3.1-8b-instant"
+LLM_MODEL = os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b")
 
 def validate_response(response: str, query: str) -> str:
     """

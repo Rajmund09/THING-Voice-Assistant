@@ -56,6 +56,10 @@ def _get_active_device_id(sp) -> Optional[str]:
         # Fall back to first available
         return device_list[0]["id"]
     except Exception as exc:
+        err_str = str(exc)
+        if "403" in err_str or "user may not be registered" in err_str.lower():
+            logger.error("[Spotify] Could not fetch devices: %s", exc)
+            return None  # caller handles the specific 403 message
         logger.error("[Spotify] Could not fetch devices: %s", exc)
         return None
 
@@ -75,8 +79,9 @@ def play_track(query: str) -> str:
         device_id = _get_active_device_id(sp)
         if not device_id:
             return (
-                "No active Spotify device found. Please open Spotify on your PC or phone first, "
-                "then try again."
+                "Spotify returned a permission error (403). "
+                "Your account email needs to be added to the Spotify Developer Dashboard: "
+                "developer.spotify.com/dashboard → your app → Settings → User Management."
             )
 
         # Try playlist first (e.g., "Discover Weekly", "Liked Songs")

@@ -33,7 +33,7 @@ def fetch_knowledge(query: str, realtime: bool = False) -> str:
                 {"role": "user", "content": query}
             ]
             response = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+                model=os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b"),
                 messages=messages,
                 max_tokens=150
             )
@@ -49,7 +49,7 @@ def summarize_with_groq(query: str, context: str) -> str:
             {"role": "user", "content": f"Query: {query}\nContext: {context}"}
         ]
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b"),
             messages=messages,
             max_tokens=100
         )

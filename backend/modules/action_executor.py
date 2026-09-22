@@ -119,7 +119,10 @@ def _execute_single(action: Dict[str, Any], act_type: str) -> str:
             return result
 
         elif act_type == "type_and_send":
-            return type_and_send(action.get("text", ""), action.get("press_enter", False))
+            _emit_status("typing", "Typing...")
+            result = type_and_send(action.get("text", ""), action.get("press_enter", False))
+            _emit_status("idle", "Done")
+            return result
 
         elif act_type == "search_web":
             return search_web(action.get("query", ""))

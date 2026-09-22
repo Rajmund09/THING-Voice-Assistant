@@ -43,7 +43,7 @@ Never expose JSON, tags, or internal logic.
         from backend.core.connectivity_monitor import monitor as connectivity_monitor
         if connectivity_monitor.is_online():
             response = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+                model=os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b"),
                 messages=messages,
                 max_tokens=150
             )

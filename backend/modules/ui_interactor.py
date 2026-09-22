@@ -63,6 +63,12 @@ def click_at(x: int, y: int, button: str = "left") -> str:
 
     try:
         pyautogui = _get_pyautogui()
+        # Notify pet of clicking state
+        try:
+            from backend.core.server import socketio
+            socketio.emit("status", {"state": "clicking", "text": "Clicking..."})
+        except Exception:
+            pass
         # Smooth movement over 0.3s then click
         pyautogui.moveTo(x, y, duration=0.3)
         pyautogui.click(x, y, button=button)

@@ -49,7 +49,14 @@ def route_intent(command: str) -> Dict[str, Any]:
             state_manager.clear_pending_action()
             return {"type": "CANCEL_PENDING", "response": "Cancelled."}
 
-        # Ambiguous — ask again (skip LLM to avoid latency in tight confirmation loop)
+        # Escape hatch: if this looks like a real new command, cancel the pending
+        # action and process it fresh — prevents the "say yes/no" infinite loop
+        real_intent = get_local_intent(cmd, use_llm_fallback=False)
+        if real_intent:
+            state_manager.clear_pending_action()
+            return {"type": "LOCAL", "intent": real_intent}
+
+        # Truly ambiguous — ask once more
         return {
             "type": "CHAT",
             "response": "Please say yes to proceed or no to cancel.",

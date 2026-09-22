@@ -24,7 +24,7 @@ def get_about_me_response(query: str) -> str:
     
     try:
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model=os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b"),
             messages=[
                 {"role": "system", "content": ABOUT_ME_SYSTEM_PROMPT.format(profile_summary=summary)},
                 {"role": "user", "content": query}

@@ -88,6 +88,13 @@ def assistant_loop():
 @socketio.on("connect")
 def handle_connect():
     emit("status", {"state": "idle", "text": "Connected"})
+    # Restore last 20 messages so the frontend can rebuild conversation history
+    try:
+        from backend.engine.memory_engine import memory
+        history = memory.get_recent_commands(20)  # [{cmd, result}]
+        emit("conversation_history", {"messages": history})
+    except Exception:
+        pass
 
 @socketio.on("text_command")
 def handle_text_command(data):
@@ -234,7 +241,9 @@ def oauth_callback():
             "<p>You can close this window.</p></body></html>"
         ), 400
 
-    service = get_pending_service()
+    # Use state param (embedded by get_auth_url) as the service identifier —
+    # this makes the callback fully self-contained even if the global is cleared
+    service = state if state else get_pending_service()
     success = handle_callback(code, service)
 
     # Notify frontend via WebSocket so the dashboard updates immediately

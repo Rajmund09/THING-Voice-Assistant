@@ -79,6 +79,12 @@ def get_redirect_uri(service: str) -> str:
 
 _pending_service: Optional[str] = None  # service currently awaiting callback
 
+# ─── Refresh backoff tracker ────────────────────────────────────────
+# Prevents spam retries when a service's refresh token is permanently invalid
+_refresh_backoff: Dict[str, float] = {}  # service -> earliest allowed retry time
+_refresh_fail_count: Dict[str, int] = {}  # service -> consecutive failure count
+BACKOFF_STEPS = [120, 240, 480, 960, 1800]  # seconds: 2m, 4m, 8m, 16m, 30m
+
 
 # ─── Encryption helpers ─────────────────────────────────────────────
 
@@ -225,9 +231,16 @@ def _refresh_token(service: str, token_data: Dict[str, Any]) -> Optional[Dict[st
         new_data["expires_at"] = time.time() + new_data.get("expires_in", 3600)
         _store_service_tokens(service, new_data)
         logger.info("[OAuth] Refreshed token for %s", service)
+        # Reset backoff on success
+        _refresh_backoff.pop(service, None)
+        _refresh_fail_count.pop(service, None)
         return new_data
     except Exception as exc:
-        logger.error("[OAuth] Failed to refresh token for %s: %s", service, exc)
+        fails = _refresh_fail_count.get(service, 0) + 1
+        _refresh_fail_count[service] = fails
+        wait = BACKOFF_STEPS[min(fails - 1, len(BACKOFF_STEPS) - 1)]
+        _refresh_backoff[service] = time.time() + wait
+        logger.error("[OAuth] Failed to refresh token for %s: %s (backing off %ds)", service, exc, wait)
         return None
 
 
@@ -251,6 +264,10 @@ def get_token(service: str) -> Optional[str]:
     # Check expiry (with 60s buffer)
     expires_at = token_data.get("expires_at", 0)
     if time.time() >= expires_at - 60:
+        # Honour backoff — don't hammer a failing service
+        retry_after = _refresh_backoff.get(service, 0)
+        if time.time() < retry_after:
+            return None  # silently skip until backoff clears
         token_data = _refresh_token(service, token_data)
         if not token_data:
             return None
@@ -318,6 +335,10 @@ def get_auth_url(service: str) -> Optional[str]:
         params.pop("scope", None)
         params["owner"] = "user"
 
+    # Embed service name in state param so callback is self-contained
+    # (survives browser redirects that would clear _pending_service global)
+    params["state"] = service
+
     _pending_service = service
     full_url = auth_url + "?" + urllib.parse.urlencode(params)
     logger.info("[OAuth] Auth URL generated for %s", service)
@@ -342,6 +363,9 @@ def handle_callback(code: str, service: Optional[str] = None) -> bool:
     if not target_service:
         logger.error("[OAuth] Callback received but no pending service known.")
         return False
+
+    # Clear pending once we have the service identified
+    _pending_service = None
 
     cfg = SERVICE_CONFIGS.get(target_service)
     if not cfg:
