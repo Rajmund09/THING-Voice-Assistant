@@ -57,9 +57,12 @@ STT_CORRECTIONS = {
     "shut down": "shutdown", "shudown": "shutdown", "shutdwon": "shutdown",
     "re start": "restart", "rsteart": "restart",
     "lok": "lock", "lcok": "lock",
-    # Scroll
+    # Scroll (single word AND common full phrases)
     "scrol": "scroll", "scrole": "scroll", "scrool": "scroll",
     "srcoll": "scroll", "scroling": "scrolling", "sroll": "scroll",
+    "scrole down": "scroll down", "scrole up": "scroll up",
+    "scrol down": "scroll down", "scrol up": "scroll up",
+    "srcoll down": "scroll down", "srcoll up": "scroll up",
     # Apps
     "screenshoot": "screenshot", "screen shot": "screenshot",
     "power point": "powerpoint", "powepoint": "powerpoint",
@@ -89,6 +92,7 @@ _KNOWN_WORDS = [
     "shutdown", "volume", "brightness", "screenshot", "youtube", "spotify",
     "whatsapp", "chrome", "notepad", "increase", "decrease", "mute", "unmute",
     "search", "weather", "time", "date", "email", "send", "type",
+    "up", "down", "left", "right", "on", "off", "the", "my", "to",
 ]
 
 

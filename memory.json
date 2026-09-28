@@ -3,14 +3,6 @@
     "chat_history": [
         {
             "speaker": "user",
-            "text": "hi"
-        },
-        {
-            "speaker": "assistant",
-            "text": "I am currently offline and my local model is unreachable."
-        },
-        {
-            "speaker": "user",
             "text": "who made you"
         },
         {
@@ -40,17 +32,17 @@
         {
             "speaker": "assistant",
             "text": "I am currently offline and my local model is unreachable."
+        },
+        {
+            "speaker": "user",
+            "text": "hi"
+        },
+        {
+            "speaker": "assistant",
+            "text": "I am currently offline and my local model is unreachable."
         }
     ],
     "command_history": [
-        {
-            "cmd": "{'action': 'control_system', 'type': 'brightness_down', 'value': None}",
-            "res": "Brightness decreased to 90%."
-        },
-        {
-            "cmd": "{'action': 'control_system', 'type': 'brightness_down', 'value': None}",
-            "res": "Brightness decreased to 80%."
-        },
         {
             "cmd": "{'action': 'control_system', 'type': 'brightness_down', 'value': None}",
             "res": "Brightness decreased to 70%."
@@ -82,6 +74,14 @@
         {
             "cmd": "{'action': 'spotify_play', 'query': 'youtube tum hi ho'}",
             "res": "No active Spotify device found. Please open Spotify on your PC or phone first, then try again."
+        },
+        {
+            "cmd": "{'action': 'get_time'}",
+            "res": "It's 3:58 PM."
+        },
+        {
+            "cmd": "{'action': 'control_system', 'type': 'brightness_up', 'value': None}",
+            "res": "Brightness increased to 60%."
         }
     ],
     "context": {

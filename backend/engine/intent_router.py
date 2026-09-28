@@ -304,8 +304,10 @@ def _build_intent(intent_name: str, match: re.Match) -> Optional[Dict[str, Any]]
         return {"action": "control_system", "type": "open_camera"}
 
     elif intent_name == "scroll_screen":
-        direction = g[1].lower()
-        amount = int(g[2]) if len(g) > 2 and g[2] else 300
+        # g[0] = direction (up/down), g[1] = optional amount
+        # Bare 'scroll' pattern has no groups — default to scroll down
+        direction = (g[0].lower() if g and g[0] else "down")
+        amount = int(g[1]) if len(g) > 1 and g[1] else 300
         return {"action": "scroll_screen", "direction": direction, "amount": amount}
 
     elif intent_name == "scroll_edge":
