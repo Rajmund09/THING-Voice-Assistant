@@ -118,7 +118,7 @@ class DesktopPet(QWidget):
     def _set_state(self, state: str):
         if state == self.current_state:
             return
-        print(f"[DesktopPet] → {state}")
+        print(f"[DesktopPet] -> {state}")
         self.current_state = state
 
         # Stop roam timer when actively doing something

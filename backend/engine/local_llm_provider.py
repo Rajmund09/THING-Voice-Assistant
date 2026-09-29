@@ -72,7 +72,7 @@ def _ollama_chat(prompt: str, system: str = "", history: List[Dict] = None) -> s
     r = requests.post(
         f"{OLLAMA_BASE_URL}/api/chat",
         json={"model": model, "messages": messages, "stream": False, "options": {"num_predict": 200}},
-        timeout=30,
+        timeout=10,  # Fast fail — don't hang THING for 30s
     )
     r.raise_for_status()
     return r.json()["message"]["content"].strip()

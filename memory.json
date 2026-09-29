@@ -3,22 +3,6 @@
     "chat_history": [
         {
             "speaker": "user",
-            "text": "yes"
-        },
-        {
-            "speaker": "assistant",
-            "text": "Sure, what do you need help with? I can see you and your screen\u2014just say \u201clook at me\u201d, \u201cwho am I\u201d, or \u201cscan my screen\u201d to"
-        },
-        {
-            "speaker": "user",
-            "text": "yes"
-        },
-        {
-            "speaker": "assistant",
-            "text": "Got it.  \nIf you\u2019d like me to capture your current view, just say \u201clook at me\u201d, \u201cwho am I\u201d, or \u201cscan my screen\u201d."
-        },
-        {
-            "speaker": "user",
             "text": "scan my scree"
         },
         {
@@ -40,6 +24,22 @@
         {
             "speaker": "assistant",
             "text": ""
+        },
+        {
+            "speaker": "user",
+            "text": "january ke gane"
+        },
+        {
+            "speaker": "assistant",
+            "text": "I had trouble thinking locally. Make sure Ollama is running."
+        },
+        {
+            "speaker": "user",
+            "text": "is olama is running"
+        },
+        {
+            "speaker": "assistant",
+            "text": "I had trouble thinking locally. Make sure Ollama is running."
         }
     ],
     "command_history": [
