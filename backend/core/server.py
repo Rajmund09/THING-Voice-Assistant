@@ -183,6 +183,18 @@ def start_server():
     connectivity_monitor.start()
 
     threading.Thread(target=assistant_loop, daemon=True).start()
+
+    # Sync personal knowledge to RAG in background (non-blocking)
+    def _sync_rag():
+        try:
+            from backend.engine.rag_engine import rag_engine
+            rag_engine.sync_profile()
+            rag_engine.sync_memory()
+            print(f"[RAG] Knowledge base ready — {rag_engine.count()} chunks indexed")
+        except Exception as rag_exc:
+            print(f"[RAG] Sync skipped (install chromadb + sentence-transformers): {rag_exc}")
+    threading.Thread(target=_sync_rag, daemon=True).start()
+
     socketio.run(app, host="0.0.0.0", port=5000, debug=False, use_reloader=False, allow_unsafe_werkzeug=True)
 
 

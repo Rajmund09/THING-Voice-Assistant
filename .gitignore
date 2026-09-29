@@ -28,5 +28,8 @@ frontend/dist/
 # Data files
 memory.json
 contacts.json
+
+# RAG Knowledge Base (personal vectors — never commit)
+knowledge_base/
 scratch/
 temp/

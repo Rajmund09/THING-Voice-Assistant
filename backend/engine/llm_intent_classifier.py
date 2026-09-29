@@ -147,11 +147,20 @@ def classify_intent_llm(command: str) -> Optional[Dict[str, Any]]:
 
         from backend.core.connectivity_monitor import monitor as connectivity_monitor
         if connectivity_monitor.is_online():
-            raw = _classify_intent_cached(command, context_str)
+            try:
+                raw = _classify_intent_cached(command, context_str)
+            except Exception as groq_exc:
+                # Groq failed (e.g. invalid API key) — try Ollama
+                logger.warning("[Classifier] Groq failed (%s) — trying Ollama", groq_exc)
+                from backend.engine.local_llm_provider import classify_intent_local
+                result = classify_intent_local(command)
+                return result  # already a dict or None
         else:
             from backend.engine.local_llm_provider import classify_intent_local
             logger.info("Using local LLM for intent classification.")
-            raw = classify_intent_local(command, _system_prompt, context_str)
+            raw = classify_intent_local(command)
+            if isinstance(raw, dict):
+                return raw
             if not raw:
                 return None
         elapsed_ms = (time.perf_counter() - t0) * 1000
