@@ -19,7 +19,6 @@ class MemoryEngine:
             try:
                 with open(self.memory_file, 'r') as f:
                     data = json.load(f)
-                    # Merge data ensuring keys exist
                     for key in self.memory.keys():
                         if key in data:
                             self.memory[key] = data[key]
@@ -34,9 +33,11 @@ class MemoryEngine:
             print(f"Error saving memory: {e}")
 
     def add_chat(self, speaker: str, text: str):
+        if not text or "trouble thinking locally" in text.lower() or "offline" in text.lower():
+            return
         self.memory["chat_history"].append({"speaker": speaker, "text": text})
-        if len(self.memory["chat_history"]) > 10: # Keep it short to avoid contamination
-            self.memory["chat_history"] = self.memory["chat_history"][-10:]
+        if len(self.memory["chat_history"]) > 6:
+            self.memory["chat_history"] = self.memory["chat_history"][-6:]
         
         # Extract preferences if it's the user speaking
         if speaker == "user":
@@ -47,6 +48,9 @@ class MemoryEngine:
                 print(f"[Memory] Updated preferences: {new_prefs}")
                 
         self.save_memory()
+
+    def add_chat_turn(self, speaker: str, text: str):
+        self.add_chat(speaker, text)
 
     def add_command(self, command: str, result: str):
         self.memory["command_history"].append({"cmd": command, "res": result})
@@ -62,7 +66,7 @@ class MemoryEngine:
         return self.memory.get("context", {})
 
     def get_chat_history(self) -> List[Dict[str, str]]:
-        return self.memory.get("chat_history", [])
+        return self.memory.get("chat_history", [])[-6:]
 
     def clear_context(self):
         self.memory["context"] = {}

@@ -3,88 +3,18 @@
     "chat_history": [
         {
             "speaker": "user",
-            "text": "scan my scree"
+            "text": "hi"
         },
         {
             "speaker": "assistant",
-            "text": "Absolutely, I can see what\u2019s on your screen now. If you\u2019d like me to capture a fresh view, just say \u201clook at me,\u201d \u201cwho am I,\u201d or \u201cscan my screen.\u201d"
-        },
-        {
-            "speaker": "user",
-            "text": "scan my screen"
-        },
-        {
-            "speaker": "assistant",
-            "text": ""
-        },
-        {
-            "speaker": "user",
-            "text": "hiii"
-        },
-        {
-            "speaker": "assistant",
-            "text": ""
-        },
-        {
-            "speaker": "user",
-            "text": "january ke gane"
-        },
-        {
-            "speaker": "assistant",
-            "text": "I had trouble thinking locally. Make sure Ollama is running."
-        },
-        {
-            "speaker": "user",
-            "text": "is olama is running"
-        },
-        {
-            "speaker": "assistant",
-            "text": "I had trouble thinking locally. Make sure Ollama is running."
+            "text": "Hey Prabhu. What can I do for you today?"
         }
     ],
     "command_history": [
         {
-            "cmd": "{'action': 'spotify_play', 'query': 'youtube tum hi ho'}",
-            "res": "No active Spotify device found. Please open Spotify on your PC or phone first, then try again."
-        },
-        {
-            "cmd": "{'action': 'spotify_play', 'query': 'youtube tum hi ho'}",
-            "res": "No active Spotify device found. Please open Spotify on your PC or phone first, then try again."
-        },
-        {
-            "cmd": "{'action': 'spotify_play', 'query': 'youtube tum hi ho'}",
-            "res": "No active Spotify device found. Please open Spotify on your PC or phone first, then try again."
-        },
-        {
             "cmd": "{'action': 'get_time'}",
-            "res": "It's 3:58 PM."
-        },
-        {
-            "cmd": "{'action': 'control_system', 'type': 'brightness_up', 'value': None}",
-            "res": "Brightness increased to 60%."
-        },
-        {
-            "cmd": "{'action': 'scroll_screen', 'direction': 'down', 'amount': 300}",
-            "res": "Scrolled down."
-        },
-        {
-            "cmd": "{'action': 'scroll_screen', 'direction': 'down', 'amount': 300}",
-            "res": "Scrolled down."
-        },
-        {
-            "cmd": "{'action': 'scroll_screen', 'direction': 'up', 'amount': 300}",
-            "res": "Scrolled up."
-        },
-        {
-            "cmd": "{'action': 'send_number_msg', 'phone_number': '7978567667', 'message': 'hi'}",
-            "res": "Sending WhatsApp message to 7978567667. I'll focus the window and send it automatically in a few seconds."
-        },
-        {
-            "cmd": "{'action': 'search_web', 'query': 'ready to send email'}",
-            "res": "Searching for 'ready to send email'."
+            "res": "It's 3:45 PM."
         }
     ],
-    "context": {
-        "active_app": "whatsapp"
-    }
+    "context": {}
 }
